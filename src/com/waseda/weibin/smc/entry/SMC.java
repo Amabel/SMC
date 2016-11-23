@@ -1,15 +1,21 @@
-package entry;
+package com.waseda.weibin.smc.entry;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-public class ExecuteShellCommand {
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+public class SMC {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		ExecuteShellCommand obj = new ExecuteShellCommand();
+//		ExecuteShellCommand obj = new ExecuteShellCommand();
+//		
+//		String cmd = "verify inc.c";
+//		obj.executeCommand(cmd);
 		
-		String cmd = "verify inc.c";
-		obj.executeCommand(cmd);
+		Logger logger = LogManager.getRootLogger();
+		logger.debug("This is debug message.");
 
 	}
 	
