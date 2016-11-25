@@ -3,6 +3,8 @@ package com.waseda.weibin.smc.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @author  Weibin Luo
@@ -24,9 +26,13 @@ public class Input {
 		return input;
 	}
 	
-	public boolean checkInput(String input) {
+	public static boolean checkInput(String input) {
+		String str = input.trim() + " ";
+		// Match inputs like "a.c b.c val1 val2".
+		Pattern p = Pattern.compile("((\\w)+\\.c\\s)+((\\w)+\\s)+");
+		Matcher m = p.matcher(str);
 		
-		return false;
+		return m.matches();
 		
 	}
 }

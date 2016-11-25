@@ -1,5 +1,6 @@
 package com.waseda.weibin.smc.controller;
 
+import com.waseda.weibin.smc.util.Input;
 import com.waseda.weibin.smc.view.CLIView;
 import com.waseda.weibin.smc.view.View;
 
@@ -17,6 +18,8 @@ public class ViewController {
 		
 		showMessage("> ");
 		String input = getInput();
+		boolean b = Input.checkInput(input);
+		showMessage(b?"t":"f");
 		
 
 	}
@@ -27,13 +30,10 @@ public class ViewController {
 	
 	private String getInput() {
 		String input = null;
-		view.getInput();
+		input = view.getInput();
 		return input;
 	}
 	
-	private boolean checkInput(String input) {
-		return false;
-		
-	}
+
 	
 }

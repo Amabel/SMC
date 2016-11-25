@@ -24,7 +24,7 @@ public class CLIView implements View {
 	public String getInput() {
 		// TODO Auto-generated method stub
 		String input = null;
-		Input.getInput();
+		input = Input.getInput();
 		return input;
 	}
 	
