@@ -14,10 +14,26 @@ public class ViewController {
 	public void launch() {
 		// TODO Auto-generated method stub
 		view = new CLIView();
+		
 		showMessage("> ");
+		String input = getInput();
+		
+
 	}
 	
 	private void showMessage(String msg) {
 		view.showMessage(msg);
 	}
+	
+	private String getInput() {
+		String input = null;
+		view.getInput();
+		return input;
+	}
+	
+	private boolean checkInput(String input) {
+		return false;
+		
+	}
+	
 }

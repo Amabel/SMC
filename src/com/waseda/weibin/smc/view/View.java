@@ -7,4 +7,5 @@ public interface View {
 
 	public void launch();
 	public void showMessage(String msg);
+	public String getInput();
 }
