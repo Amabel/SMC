@@ -26,13 +26,13 @@ public class Input {
 		return input;
 	}
 	
-	public static boolean checkInput(String input) {
+	public static boolean checkSliceInput(String input) {
 		String str = input.trim() + " ";
 		// Match inputs like "a.c b.c val1 val2".
 		Pattern p = Pattern.compile("((\\w)+\\.c\\s)+((\\w)+\\s)+");
 		Matcher m = p.matcher(str);
 		
 		return m.matches();
-		
 	}
+	
 }

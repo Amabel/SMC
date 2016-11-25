@@ -1,6 +1,7 @@
 package com.waseda.weibin.smc.controller;
 
 import com.waseda.weibin.smc.util.Input;
+import com.waseda.weibin.smc.util.ProgramStatus;
 import com.waseda.weibin.smc.view.CLIView;
 import com.waseda.weibin.smc.view.View;
 
@@ -11,16 +12,30 @@ import com.waseda.weibin.smc.view.View;
 public class ViewController {
 
 	private View view;
+	private ProgramStatus status;
 	
 	public void launch() {
 		// TODO Auto-generated method stub
 		view = new CLIView();
+		switchToInitStatus();
 		
-		showMessage("> ");
-		String input = getInput();
-		boolean b = Input.checkInput(input);
-		showMessage(b?"t":"f");
-		
+		while (true) {
+			// Print the prompt
+			showMessage("> ");
+			switchToSliceStatus();
+			switch (status) {
+			case SLICE:
+				processSlice();
+				break;
+			case MODELCHECKING:
+				processModelChecking();
+				break;
+			default:
+				break;
+			}
+			
+			
+		}
 
 	}
 	
@@ -34,6 +49,34 @@ public class ViewController {
 		return input;
 	}
 	
-
+	private void processSlice() {
+		// Get the input and check
+		String input = getInput();
+		boolean inputChecked = Input.checkSliceInput(input);
+		if (!inputChecked) {
+			showMessage("Usage: file1.c [file 2.c ...] value1 [value2 ...]");
+			return;
+		} else {
+			// If passed the check
+			// Do the slice
+			switchToModelCheckingStatus();
+		}
+	}
+	
+	private void processModelChecking() {
+		
+	}
+	
+	private void switchToInitStatus() {
+		this.status = ProgramStatus.INITIALIZE;
+	}
+	
+	private void switchToSliceStatus() {
+		this.status = ProgramStatus.SLICE;
+	}
+	
+	private void switchToModelCheckingStatus() {
+		this.status = ProgramStatus.MODELCHECKING;
+	}
 	
 }
