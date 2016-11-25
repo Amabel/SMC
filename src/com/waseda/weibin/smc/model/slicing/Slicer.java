@@ -4,5 +4,6 @@ package com.waseda.weibin.smc.model.slicing;
  * @version Created on Nov 23, 2016 12:32:19 PM
  */
 public interface Slicer {
-
+	
+	public void slice();
 }
