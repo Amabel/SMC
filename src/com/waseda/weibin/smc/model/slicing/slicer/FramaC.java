@@ -6,6 +6,12 @@ import com.waseda.weibin.smc.model.slicing.Slicer;
  * @author  Weibin Luo 
  * @version Created on Nov 23, 2016 12:24:17 PM
  */
-public class FramaC implements Slicer {
+public class FramaC extends Slicer {
+
+	@Override
+	public void slice() {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }
