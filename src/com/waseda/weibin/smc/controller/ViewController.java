@@ -1,5 +1,7 @@
 package com.waseda.weibin.smc.controller;
 
+import com.waseda.weibin.smc.model.slicing.Slicer;
+import com.waseda.weibin.smc.model.slicing.slicer.FramaC;
 import com.waseda.weibin.smc.util.Input;
 import com.waseda.weibin.smc.util.ProgramStatus;
 import com.waseda.weibin.smc.view.CLIView;
@@ -54,11 +56,17 @@ public class ViewController {
 		String input = getInput();
 		boolean inputChecked = Input.checkSliceInput(input);
 		if (!inputChecked) {
-			showMessage("Usage: file1.c [file 2.c ...] value1 [value2 ...]");
+			showMessage("Usage: file1.c [file 2.c ...] value1 [value2 ...]\n");
 			return;
 		} else {
 			// If passed the check
 			// Do the slice
+			
+			String[] files = {"abc.c", "asdsfa.c"};
+			String[] values = {"a", "b"};
+			Slicer slicer = new FramaC(files, values);
+			slicer.slice();
+			
 			switchToModelCheckingStatus();
 		}
 	}
