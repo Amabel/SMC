@@ -4,15 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import com.waseda.weibin.smc.model.slicing.Slicer;
+import com.waseda.weibin.smc.util.Command;
+import com.waseda.weibin.smc.util.Log4j2;
 
 /**
  * @author  Weibin Luo 
  * @version Created on Nov 23, 2016 12:24:17 PM
  */
 public class FramaC extends Slicer {
-	String input;
-	List<String> files;
-	List<String> values;
+	
+	private String input;
+	private List<String> files;
+	private List<String> values;
+	private String targetDirectory = "examples";
 	
 	public FramaC(String input) {
 		// TODO Auto-generated constructor stub
@@ -22,8 +26,19 @@ public class FramaC extends Slicer {
 	@Override
 	public void slice() {
 		// TODO Auto-generated method stub
-		String cmd = createCommand();
+		String command = createCommand();
+		Command.execute(command);
 		
+	}
+	
+	private void doSlice() {
+		
+	}
+	
+	private void changeCurrentDirectory() {
+		// Switch to targetDirectory 
+		String cmd = "cd" + targetDirectory;
+		Command.execute(cmd);
 	}
 	
 	private String createCommand() {
@@ -31,12 +46,17 @@ public class FramaC extends Slicer {
 		// Put input into Arraylist files and values
 		processInput();
 		String str = processFileNames() + "-slice-value " + processValueNames();
-		String targetFileName = files.get(0);
+		String targetFileName = files.get(0).substring(0, files.get(0).length() - 2) + "_sliced.c";
 		// Generate the slicing command
 		// EG. of command: $ frama-c <source files> <desired slicing mode and appropriate options> -then-on 'Slicing export' -print
+		// Create a new file
 		cmd = "frama-c " + str + "-then-on 'Slicing export' -print -ocode " + targetFileName ;
+		// Does not create a new file
+//		cmd = "frama-c " + str + "-then-on 'Slicing export' -print";
 		
-		System.out.println("");
+//		Log4j2.logger.trace("===== Print the slicing command =====");
+//		Log4j2.logger.trace(cmd);
+		
 		System.out.println(cmd);
 		
 		return cmd;
