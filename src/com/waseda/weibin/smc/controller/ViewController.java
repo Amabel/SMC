@@ -29,16 +29,13 @@ public class ViewController {
 			case SLICE:
 				processSlice();
 				break;
-			case MODELCHECKING:
-				processModelChecking();
+			case MODELCHECK:
+				processModelcheck();
 				break;
 			default:
 				break;
 			}
-			
-			
 		}
-
 	}
 	
 	private void showMessage(String msg) {
@@ -61,17 +58,13 @@ public class ViewController {
 		} else {
 			// If passed the check
 			// Do the slice
-			
-			String[] files = {"abc.c", "asdsfa.c"};
-			String[] values = {"a", "b"};
-			Slicer slicer = new FramaC(files, values);
+			Slicer slicer = new FramaC(input);
 			slicer.slice();
-			
 			switchToModelCheckingStatus();
 		}
 	}
 	
-	private void processModelChecking() {
+	private void processModelcheck() {
 		
 	}
 	
@@ -84,7 +77,7 @@ public class ViewController {
 	}
 	
 	private void switchToModelCheckingStatus() {
-		this.status = ProgramStatus.MODELCHECKING;
+		this.status = ProgramStatus.MODELCHECK;
 	}
 	
 }
