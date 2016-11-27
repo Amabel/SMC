@@ -45,10 +45,14 @@ public class FileProcessor {
         return deleted;
 	}
 	
+	public static String getFileNameWithoutSurfix(String fileName, String surfix) {
+		return fileName.substring(0, fileName.length() - surfix.length());
+	}
+	
 	private static Boolean writeContentsIntoFIle(String fileName, String contents) throws IOException {
 		Boolean writed = false;
 		// Add a new line
-		String newContents = contents+"\r\n";
+		String newContents = contents+"\n";
         String temp  = "";
         
         FileInputStream fis = null;

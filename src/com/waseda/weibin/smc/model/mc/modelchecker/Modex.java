@@ -8,4 +8,12 @@ import com.waseda.weibin.smc.model.mc.ModelChecker;
  */
 public class Modex extends ModelChecker {
 
+	
+	public Modex() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	public void extractModel() {
+		
+	}
 }

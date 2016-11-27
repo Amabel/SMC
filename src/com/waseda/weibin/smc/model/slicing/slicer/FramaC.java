@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.regex.Pattern;
 import com.waseda.weibin.smc.model.slicing.Slicer;
 import com.waseda.weibin.smc.util.Command;
+import com.waseda.weibin.smc.util.FileProcessor;
 import com.waseda.weibin.smc.util.Log4j2;
 
 /**
@@ -27,14 +28,25 @@ public class FramaC extends Slicer {
 	public void slice() {
 		// TODO Auto-generated method stub
 		String command = createCommand();
-		Command.execute(command);
-		
+		doSlice(command);
 	}
 	
-	private void doSlice() {
-		
+	private void doSlice(String command) {
+		String shellScriptName = "slice.sh";
+		Command.executeCommandInShell(command, shellScriptName);
+		// Change the sliced filename to "*_sliced.c"
+//		changeSlicedFileName(files.get(0));
 	}
 	
+	private void changeSlicedFileName(String fileName) {
+		// TODO Auto-generated method stub
+		String fileNameWithoutSurfix = FileProcessor.getFileNameWithoutSurfix(fileName, ".c");
+		String command = "mv " + fileNameWithoutSurfix + "_sliced.c? " + fileNameWithoutSurfix + "_sliced.c ";
+		String shellScriptName = "changeSlicedFile.sh";
+		Command.executeCommandInShell(command, shellScriptName);
+		
+	}
+
 	private void changeCurrentDirectory() {
 		// Switch to targetDirectory 
 		String cmd = "cd" + targetDirectory;
@@ -46,11 +58,12 @@ public class FramaC extends Slicer {
 		// Put input into Arraylist files and values
 		processInput();
 		String str = processFileNames() + "-slice-value " + processValueNames();
-		String targetFileName = files.get(0).substring(0, files.get(0).length() - 2) + "_sliced.c";
+		// Generate the target filename
+		String targetFileName = FileProcessor.getFileNameWithoutSurfix(files.get(0), ".c") + "_sliced.c";
 		// Generate the slicing command
 		// EG. of command: $ frama-c <source files> <desired slicing mode and appropriate options> -then-on 'Slicing export' -print
 		// Create a new file
-		cmd = "frama-c " + str + "-then-on 'Slicing export' -print -ocode " + targetFileName ;
+		cmd = "frama-c " + str + "-then-on 'Slicing export' -print -ocode " + targetFileName;
 		// Does not create a new file
 //		cmd = "frama-c " + str + "-then-on 'Slicing export' -print";
 		

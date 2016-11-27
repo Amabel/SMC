@@ -9,11 +9,21 @@ import java.io.InputStreamReader;
  */
 public class Command {
 
+	public static void executeCommandInShell(String command, String shellScriptName) {
+		String fileName = shellScriptName;
+		// Delete previous files
+		FileProcessor.deleteFile(fileName);
+		// Create a new shell file and write commands
+		FileProcessor.createFile(fileName, command);
+		// Change the accessibility
+		Command.execute("chmod +x ./" + fileName);
+		// Execute the shell script
+		Command.execute("./" + fileName);
+	}
+	
 	public static void execute(String command) {
-			
 		StringBuffer output = new StringBuffer();
 		Process p;
-		
 		try {
 			p = Runtime.getRuntime().exec(command);
 			p.waitFor();
