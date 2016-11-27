@@ -42,13 +42,15 @@ public class ViewController {
 			if (status == ProgramStatus.INITIALIZE) {
 				switchToGetInputFileNamesStatus();
 			}
-			// Print the prompt
-			showMessage("> ");
 			switch (status) {
 			case GETINPUTFILENAMES:
+				// Print the prompt
+				showMessage("> ");
 				getInputFileNames();
 				break;
 			case GETINPUTLTL:
+				// Print the prompt
+				showMessage("> ");
 				getInputLTL();
 				break;
 			case PROCESSINPUTS:
@@ -58,11 +60,9 @@ public class ViewController {
 				processSlice();
 				break;
 			case MODELEXTRACT:
-				System.out.println("===== Begin to modex =====");
 				processModelExtract();
 				break;
 			case MODELCHECK:
-				System.out.println("===== Begin to spin =====");
 				processModelcheck();
 				break;
 			default:
@@ -126,22 +126,28 @@ public class ViewController {
 	
 	private void processSlice() {
 		// Do the slice
-		System.out.println("===== Begin to slice =====");
+		System.out.println("\n===== Begin to slice =====");
 		slicer = new FramaC(fileNames, variableNames);
 		slicer.slice();
+		System.out.println("===== End of slicing =====");
 		switchToModelExtractStatus();
 	}
 	
 	private void processModelExtract() {
+		System.out.println("\n===== Begin to modex =====");
 		modex = new Modex(fileNames, variableNames, ltls);
 		modex.extractModel();
-		switchToInitStatus();
+		System.out.println("===== End of modex =====");
+		switchToModelCheckingStatus();
 	}
 	
 	private void processModelcheck() {
-		// TODO Auto-generated method stub
-		spin = new SPIN();
-		spin.doModelChecking();
+		System.out.println("\n===== Begin to spin =====");
+		String outputDestinationFileName = "results_with_slicing.txt";
+		spin = new SPIN(outputDestinationFileName);
+		spin.modelCheck();
+		System.out.println("output file: " + outputDestinationFileName);
+		System.out.println("===== End of spin =====");
 		switchToInitStatus();
 	}
 

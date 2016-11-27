@@ -1,6 +1,8 @@
 package com.waseda.weibin.smc.model.mc.modelchecker;
 
 import com.waseda.weibin.smc.model.mc.ModelChecker;
+import com.waseda.weibin.smc.util.Command;
+import com.waseda.weibin.smc.util.FileProcessor;
 
 /**
  * @author  Weibin Luo
@@ -8,13 +10,20 @@ import com.waseda.weibin.smc.model.mc.ModelChecker;
  */
 public class SPIN extends ModelChecker {
 
-	public SPIN() {
-		
+	private String outputDestinationFileName;
+	
+	public SPIN(String outputDestinationFilename) {
+		this.outputDestinationFileName = outputDestinationFilename;
 	}
 	
-	public void doModelChecking() {
-		
+	public void modelCheck() {
+		doModelCheck();
 	}
 	
+	private void doModelCheck() {
+		String command = "spin -run model";
+		FileProcessor.deleteFile(outputDestinationFileName);
+		Command.executeCommandInShell(command, "spin.sh", outputDestinationFileName);
+	}
 	
 }
