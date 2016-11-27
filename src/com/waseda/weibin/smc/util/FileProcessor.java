@@ -15,12 +15,16 @@ import java.io.PrintWriter;
 public class FileProcessor {
 
 	public static Boolean createFile(String fileName) {
+		// Delete previous files
+		FileProcessor.deleteFile(fileName);
 		return createFileWithFileName(fileName);
 	}
 	
 	public static Boolean createFile(String fileName, String contents) {
 		Boolean created = false;
 		try {
+			// Delete previous files
+			FileProcessor.deleteFile(fileName);
 			createFileWithFileName(fileName);
 			writeContentsIntoFIle(fileName, contents);
 			created = true;

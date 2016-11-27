@@ -5,7 +5,8 @@ package com.waseda.weibin.smc.util;
  */
 public enum ProgramStatus {
 	INITIALIZE,
+	GETINPUT,
 	SLICE,
-	MODELCHECK,
+	MODELCHECK, 
 	
 }

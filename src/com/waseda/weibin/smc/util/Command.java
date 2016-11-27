@@ -11,8 +11,6 @@ public class Command {
 
 	public static void executeCommandInShell(String command, String shellScriptName) {
 		String fileName = shellScriptName;
-		// Delete previous files
-		FileProcessor.deleteFile(fileName);
 		// Create a new shell file and write commands
 		FileProcessor.createFile(fileName, command);
 		// Change the accessibility

@@ -31,6 +31,14 @@ public class FramaC extends Slicer {
 		doSlice(command);
 	}
 	
+	// Getters
+	public List<String> getFiles() {
+		return files;
+	}
+	public List<String> getValues() {
+		return values;
+	}
+	
 	private void doSlice(String command) {
 		String shellScriptName = "slice.sh";
 		Command.executeCommandInShell(command, shellScriptName);
@@ -44,7 +52,6 @@ public class FramaC extends Slicer {
 		String command = "mv " + fileNameWithoutSurfix + "_sliced.c? " + fileNameWithoutSurfix + "_sliced.c ";
 		String shellScriptName = "changeSlicedFile.sh";
 		Command.executeCommandInShell(command, shellScriptName);
-		
 	}
 
 	private void changeCurrentDirectory() {
