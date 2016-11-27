@@ -1,9 +1,9 @@
 package com.waseda.weibin.smc.model.mc.modelchecker;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.waseda.weibin.smc.model.mc.ModelChecker;
+import com.waseda.weibin.smc.util.Command;
 import com.waseda.weibin.smc.util.FileProcessor;
 
 /**
@@ -14,31 +14,45 @@ public class Modex extends ModelChecker {
 
 	private List<String> fileNames;
 	private List<String> variableNames;
+	private List<String> ltls;
 	
-	public Modex(List<String> fileNames, List<String> variableNames) {
+	public Modex(List<String> fileNames, List<String> variableNames, List<String> ltls) {
 		// TODO Auto-generated constructor stub
 		this.fileNames = fileNames;
 		this.variableNames = variableNames;
+		this.ltls =ltls;
 	}
 	
-	public void processModelCheck() {
+	public void extractModel() {
 		// TODO Auto-generated method stub
 		generatePrxFile();
-		extractModel();
+		extractTheModel();
+		attachLTLsToModel();
 	}
 	
-	private void extractModel() {
+	private void extractTheModel() {
 		// Execute command "modex xxx.c"
 		String fileName = fileNames.get(0);
 		String command = "modex " + fileName;
 		
 		System.out.println("Modex command: " + command);
+		Command.executeCommandInShell(command, "modex.sh");
 	}
 	
 	private void generatePrxFile() {
 		String contents = "%X -xe";
 		String fileName = FileProcessor.getFileNameWithoutSurfix(fileNames.get(0), ".c") + ".prx";
 		FileProcessor.createFile(fileName, contents);
+	}
+	
+	private void attachLTLsToModel() {
+		String contents = "";
+		for (String ltl : ltls) {
+			contents += "ltl {\n"
+					+ ltl
+					+ "\n}";
+		}
+		FileProcessor.appendContentsToFile("model", contents);
 	}
 
 }

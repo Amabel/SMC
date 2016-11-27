@@ -9,5 +9,6 @@ public enum ProgramStatus {
 	GETINPUTLTL, 
 	PROCESSINPUTS,
 	SLICE,
+	MODELEXTRACT,
 	MODELCHECK, 
 }

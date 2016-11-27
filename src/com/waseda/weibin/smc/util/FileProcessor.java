@@ -26,13 +26,29 @@ public class FileProcessor {
 			// Delete previous files
 			FileProcessor.deleteFile(fileName);
 			createFileWithFileName(fileName);
-			writeContentsIntoFIle(fileName, contents);
+			writeContentsIntoFile(fileName, contents);
 			created = true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return created;
+	}
+	
+	public static Boolean appendContentsToFile(String fileName, String contents) {
+		if (fileExists(fileName)) {
+			try {
+				return writeContentsIntoFile(fileName, contents);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
+	public static Boolean fileExists(String fileName) {
+		return new File(fileName).exists();
 	}
 	
 	public static Boolean deleteFile(String fileName) {
@@ -53,7 +69,7 @@ public class FileProcessor {
 		return fileName.substring(0, fileName.length() - surfix.length());
 	}
 	
-	private static Boolean writeContentsIntoFIle(String fileName, String contents) throws IOException {
+	private static Boolean writeContentsIntoFile(String fileName, String contents) throws IOException {
 		Boolean writed = false;
 		// Add a new line
 		String newContents = contents+"\n";

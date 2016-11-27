@@ -8,4 +8,13 @@ import com.waseda.weibin.smc.model.mc.ModelChecker;
  */
 public class SPIN extends ModelChecker {
 
+	public SPIN() {
+		
+	}
+	
+	public void doModelChecking() {
+		
+	}
+	
+	
 }

@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 
 import com.waseda.weibin.smc.model.mc.ModelChecker;
 import com.waseda.weibin.smc.model.mc.modelchecker.Modex;
+import com.waseda.weibin.smc.model.mc.modelchecker.SPIN;
 import com.waseda.weibin.smc.model.slicing.Slicer;
 import com.waseda.weibin.smc.model.slicing.slicer.FramaC;
 import com.waseda.weibin.smc.util.Input;
@@ -24,6 +25,7 @@ public class ViewController {
 	private ProgramStatus status;
 	private FramaC slicer;
 	private Modex modex;
+	private SPIN spin;
 	private String fileNamesInput;
 	private String ltlsInput;
 	private List<String> fileNames;
@@ -55,8 +57,12 @@ public class ViewController {
 			case SLICE:
 				processSlice();
 				break;
-			case MODELCHECK:
+			case MODELEXTRACT:
 				System.out.println("===== Begin to modex =====");
+				processModelExtract();
+				break;
+			case MODELCHECK:
+				System.out.println("===== Begin to spin =====");
 				processModelcheck();
 				break;
 			default:
@@ -108,12 +114,6 @@ public class ViewController {
 		}
 	}
 	
-	
-
-	private void showMessage(String msg) {
-		view.showMessage(msg);
-	}
-	
 	private void getInputFileNames() {
 		fileNamesInput = view.getInput();
 		switchToGetInputLTLStatus();
@@ -129,13 +129,24 @@ public class ViewController {
 		System.out.println("===== Begin to slice =====");
 		slicer = new FramaC(fileNames, variableNames);
 		slicer.slice();
-		switchToModelCheckingStatus();
+		switchToModelExtractStatus();
+	}
+	
+	private void processModelExtract() {
+		modex = new Modex(fileNames, variableNames, ltls);
+		modex.extractModel();
+		switchToInitStatus();
 	}
 	
 	private void processModelcheck() {
-		modex = new Modex(fileNames, variableNames);
-		modex.processModelCheck();
+		// TODO Auto-generated method stub
+		spin = new SPIN();
+		spin.doModelChecking();
 		switchToInitStatus();
+	}
+
+	private void showMessage(String msg) {
+		view.showMessage(msg);
 	}
 	
 	// Switch status
@@ -156,5 +167,8 @@ public class ViewController {
 	}
 	private void switchToModelCheckingStatus() {
 		this.status = ProgramStatus.MODELCHECK;
+	}
+	private void switchToModelExtractStatus() {
+		this.status = ProgramStatus.MODELEXTRACT;
 	}
 }
