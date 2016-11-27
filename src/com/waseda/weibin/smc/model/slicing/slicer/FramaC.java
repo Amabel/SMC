@@ -15,13 +15,14 @@ import com.waseda.weibin.smc.util.Log4j2;
 public class FramaC extends Slicer {
 	
 	private String input;
-	private List<String> files;
-	private List<String> values;
+	private List<String> fileNames;
+	private List<String> variableNames;
 	private String targetDirectory = "examples";
 	
-	public FramaC(String input) {
+	public FramaC(List<String> fileNames, List<String> variableNames) {
 		// TODO Auto-generated constructor stub
-		this.input = input;
+		this.fileNames = fileNames;
+		this.variableNames = variableNames;
 	}
 	
 	@Override
@@ -33,10 +34,10 @@ public class FramaC extends Slicer {
 	
 	// Getters
 	public List<String> getFiles() {
-		return files;
+		return fileNames;
 	}
 	public List<String> getValues() {
-		return values;
+		return variableNames;
 	}
 	
 	private void doSlice(String command) {
@@ -62,15 +63,13 @@ public class FramaC extends Slicer {
 	
 	private String createCommand() {
 		String cmd = "";
-		// Put input into Arraylist files and values
-		processInput();
-		String str = processFileNames() + "-slice-value " + processValueNames();
+		String str = processFileNames() + " -slice-value " + processValueNames();
 		// Generate the target filename
-		String targetFileName = FileProcessor.getFileNameWithoutSurfix(files.get(0), ".c") + "_sliced.c";
+		String targetFileName = FileProcessor.getFileNameWithoutSurfix(fileNames.get(0), ".c") + "_sliced.c";
 		// Generate the slicing command
 		// EG. of command: $ frama-c <source files> <desired slicing mode and appropriate options> -then-on 'Slicing export' -print
 		// Create a new file
-		cmd = "frama-c " + str + "-then-on 'Slicing export' -print -ocode " + targetFileName;
+		cmd = "frama-c " + str + " -then-on 'Slicing export' -print -ocode " + targetFileName;
 		// Does not create a new file
 //		cmd = "frama-c " + str + "-then-on 'Slicing export' -print";
 		
@@ -82,36 +81,14 @@ public class FramaC extends Slicer {
 		return cmd;
 	}
 	
-	// Convert input to Arraylist files and values
-	private void processInput() {
-		files = new ArrayList<String>();
-		values = new ArrayList<String>();
-		// Convert the input to array by the separator " "
-		String[] inputs = input.split(" ");
-		Pattern p = Pattern.compile("(\\w)+\\.c");
-		for (String string : inputs) {
-			if (p.matcher(string).matches()) {
-				files.add(string);
-			} else {
-				values.add(string);
-			}
-		}
-	}
-	
 	// Convert Arraylist files into a single string 
 	private String processFileNames() {
-		String str = "";
-		for (String string : files) {
-			str += string + " ";
-		}
+		String str = String.join(" ", fileNames);
 		return str;
 	}
 	// Convert Arraylist values into a single string 
 	private String processValueNames() {
-		String str = "";
-		for (String string : values) {
-			str += string + " ";
-		}
+		String str = String.join(",", variableNames);
 		return str;
 	}
 	

@@ -26,13 +26,29 @@ public class Input {
 		return input;
 	}
 	
-	public static boolean checkSliceInput(String input) {
+	public static boolean checkFileNames1(String input) {
 		String str = input.trim() + " ";
 		// Match inputs like "a.c b.c val1 val2".
-		Pattern p = Pattern.compile("((\\w)+\\.c\\s)+((\\w)+\\s)+");
+//		Pattern p = Pattern.compile("((\\w)+\\.c\\s)+((\\w)+\\s)+");
+		// Match inputs like "a.c b.c ..."
+		Pattern p = Pattern.compile("((\\w)+\\.c\\s)+");
 		Matcher m = p.matcher(str);
-		
 		return m.matches();
+	}
+	
+	public static boolean checkFileNames(String input) {
+		String str = input.trim() + " ";
+		// Match inputs like "a.c b.c val1 val2".
+//		Pattern p = Pattern.compile("((\\w)+\\.c\\s)+((\\w)+\\s)+");
+		// Match inputs like "a.c b.c ..."
+		Pattern p = Pattern.compile("((\\w)+\\.c\\s)+");
+		Matcher m = p.matcher(str);
+		return m.matches();
+	}
+	
+	public static boolean checkLTLs() {
+		
+		return false;
 	}
 	
 }

@@ -1,6 +1,9 @@
 package com.waseda.weibin.smc.controller;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.waseda.weibin.smc.model.mc.ModelChecker;
 import com.waseda.weibin.smc.model.mc.modelchecker.Modex;
@@ -21,25 +24,34 @@ public class ViewController {
 	private ProgramStatus status;
 	private FramaC slicer;
 	private Modex modex;
-	private String lastInput;
-	private List<String> files;
-	private List<String> values;
+	private String fileNamesInput;
+	private String ltlsInput;
+	private List<String> fileNames;
+	private List<String> ltls;
+	private List<String> variableNames;
 	
 	public void launch() {
 		// TODO Auto-generated method stub
 		view = new CLIView();
-		lastInput = "";
+		fileNamesInput = "";
 		switchToInitStatus();
 		
 		while (true) {
 			if (status == ProgramStatus.INITIALIZE) {
-				status = ProgramStatus.GETINPUT;
+				switchToGetInputFileNamesStatus();
 			}
 			// Print the prompt
 			showMessage("> ");
 			switch (status) {
-			case GETINPUT:
-				getInput();
+			case GETINPUTFILENAMES:
+				getInputFileNames();
+				break;
+			case GETINPUTLTL:
+				getInputLTL();
+				break;
+			case PROCESSINPUTS:
+				processInputs();
+				break;
 			case SLICE:
 				processSlice();
 				break;
@@ -53,53 +65,96 @@ public class ViewController {
 		}
 	}
 	
+	private void processInputs() {
+		// TODO Auto-generated method stub
+		processFileNameInputs();
+		processLTLInputs();
+		switchToSliceStatus();
+	}
+	
+	private void processFileNameInputs() {
+		fileNames = new ArrayList<String>();
+		// Convert the input to array by the separator " "
+		String[] inputs = fileNamesInput.split(" ");
+		Pattern p = Pattern.compile("(\\w)+\\.c");
+		for (String string : inputs) {
+			if (p.matcher(string).matches()) {
+				fileNames.add(string);
+			} else {
+				System.out.println("Error when processing filename inputs");
+			}
+		}
+	}
+	
+	private void processLTLInputs() {
+		ltls = new ArrayList<String>();
+		variableNames = new ArrayList<String>();
+		// 
+		String[] inputs = ltlsInput.split(" ");
+		Pattern pWord = Pattern.compile("\\w+");
+		for (String string : inputs) {
+			ltls.add(string);
+			Matcher m = pWord.matcher(string);
+			while (m.find()) {
+				String varName = m.group();
+				// exclude a number condition
+				Pattern pDigit = Pattern.compile("\\d+");
+				Matcher m1 = pDigit.matcher(varName);
+				if (!m1.matches()) {
+					System.out.println("Found variable: " + varName);
+					variableNames.add(varName);
+				}
+			}
+		}
+	}
+	
+	
+
 	private void showMessage(String msg) {
 		view.showMessage(msg);
 	}
 	
-	private void getInput() {
-		lastInput = view.getInput();
-		switchToSliceStatus();
+	private void getInputFileNames() {
+		fileNamesInput = view.getInput();
+		switchToGetInputLTLStatus();
+	}
+	
+	private void getInputLTL() {
+		ltlsInput = view.getInput();
+		switchToProcessInputsStatus();
 	}
 	
 	private void processSlice() {
-		// Check the input
-		boolean inputChecked = Input.checkSliceInput(lastInput);
-		if (!inputChecked) {
-			showMessage("Usage: file1.c [file 2.c ...] value1 [value2 ...]\n");
-			return;
-		} else {
-			// If passed the check
-			// Do the slice
-			System.out.println("===== Begin to slice =====");
-			slicer = new FramaC(lastInput);
-			slicer.slice();
-			files = slicer.getFiles();
-			values = slicer.getValues();
-			switchToModelCheckingStatus();
-		}
+		// Do the slice
+		System.out.println("===== Begin to slice =====");
+		slicer = new FramaC(fileNames, variableNames);
+		slicer.slice();
+		switchToModelCheckingStatus();
 	}
 	
 	private void processModelcheck() {
-		modex = new Modex(files, values);
+		modex = new Modex(fileNames, variableNames);
 		modex.processModelCheck();
 		switchToInitStatus();
 	}
 	
+	// Switch status
 	private void switchToInitStatus() {
 		this.status = ProgramStatus.INITIALIZE;
 	}
-	
-	private void switchToGetInputStatus() {
-		this.status = ProgramStatus.GETINPUT;
+	private void switchToGetInputFileNamesStatus() {
+		this.status = ProgramStatus.GETINPUTFILENAMES;
 	}
-	
+	private void switchToGetInputLTLStatus() {
+		this.status = ProgramStatus.GETINPUTLTL;
+	}
+	private void switchToProcessInputsStatus() {
+		this.status = ProgramStatus.PROCESSINPUTS;
+	}
 	private void switchToSliceStatus() {
 		this.status = ProgramStatus.SLICE;
 	}
-	
 	private void switchToModelCheckingStatus() {
 		this.status = ProgramStatus.MODELCHECK;
 	}
-	
 }

@@ -12,13 +12,13 @@ import com.waseda.weibin.smc.util.FileProcessor;
  */
 public class Modex extends ModelChecker {
 
-	private List<String> files;
-	private List<String> values;
+	private List<String> fileNames;
+	private List<String> variableNames;
 	
-	public Modex(List<String> files, List<String> values) {
+	public Modex(List<String> fileNames, List<String> variableNames) {
 		// TODO Auto-generated constructor stub
-		this.files = files;
-		this.values = values;
+		this.fileNames = fileNames;
+		this.variableNames = variableNames;
 	}
 	
 	public void processModelCheck() {
@@ -29,7 +29,7 @@ public class Modex extends ModelChecker {
 	
 	private void extractModel() {
 		// Execute command "modex xxx.c"
-		String fileName = files.get(0);
+		String fileName = fileNames.get(0);
 		String command = "modex " + fileName;
 		
 		System.out.println("Modex command: " + command);
@@ -37,7 +37,7 @@ public class Modex extends ModelChecker {
 	
 	private void generatePrxFile() {
 		String contents = "%X -xe";
-		String fileName = FileProcessor.getFileNameWithoutSurfix(files.get(0), ".c") + ".prx";
+		String fileName = FileProcessor.getFileNameWithoutSurfix(fileNames.get(0), ".c") + ".prx";
 		FileProcessor.createFile(fileName, contents);
 	}
 
