@@ -1,5 +1,7 @@
 package com.waseda.weibin.smc.model.mc.modelchecker;
 
+import java.util.List;
+
 import com.waseda.weibin.smc.model.mc.ModelChecker;
 import com.waseda.weibin.smc.util.Command;
 import com.waseda.weibin.smc.util.FileProcessor;
@@ -11,8 +13,10 @@ import com.waseda.weibin.smc.util.FileProcessor;
 public class SPIN extends ModelChecker {
 
 	private String outputDestinationFileName;
+	private List<String> fileNames;
 	
-	public SPIN(String outputDestinationFilename) {
+	public SPIN(List<String> fileNames, String outputDestinationFilename) {
+		this.fileNames = fileNames;
 		this.outputDestinationFileName = outputDestinationFilename;
 	}
 	
@@ -21,7 +25,9 @@ public class SPIN extends ModelChecker {
 	}
 	
 	private void doModelCheck() {
-		String command = "spin -run model";
+		String fileName = FileProcessor.getFileNameWithoutSurfix(fileNames.get(0), ".c") + ".pml";
+		String command = "spin -run " + fileName;
+		System.out.println("SPIN command: " + command);
 		FileProcessor.deleteFile(outputDestinationFileName);
 		Command.executeCommandInShell(command, "spin.sh", outputDestinationFileName);
 	}

@@ -69,6 +69,13 @@ public class FileProcessor {
 		return fileName.substring(0, fileName.length() - surfix.length());
 	}
 	
+	public static void changeFileName(String fileName, String destFileName) {
+		String command = "mv " + fileName + " " + destFileName;
+		String shellScriptName = "changeFileName.sh";
+		Command.executeCommandInShell(command, shellScriptName);
+		FileProcessor.deleteFile(shellScriptName);
+	}
+	
 	private static Boolean writeContentsIntoFile(String fileName, String contents) throws IOException {
 		Boolean writed = false;
 		// Add a new line
@@ -82,14 +89,14 @@ public class FileProcessor {
         PrintWriter pw = null;
         try {
             File file = new File(fileName);
-            // 
+            
             fis = new FileInputStream(file);
             isr = new InputStreamReader(fis);
             br = new BufferedReader(isr);
             StringBuffer buffer = new StringBuffer();
             
             //文件原有内容
-            for(int i=0;(temp =br.readLine())!=null;i++){
+            for(int i=0; (temp =br.readLine())!=null; i++) {
                 buffer.append(temp);
                 // 行与行之间的分隔符 相当于“\n”
                 buffer = buffer.append(System.getProperty("line.separator"));
@@ -139,6 +146,8 @@ public class FileProcessor {
 		}
 		return created;
 	}
+	
+	
 	
 	
 }

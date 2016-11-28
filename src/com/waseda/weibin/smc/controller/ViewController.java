@@ -1,5 +1,6 @@
 package com.waseda.weibin.smc.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -10,7 +11,9 @@ import com.waseda.weibin.smc.model.mc.modelchecker.Modex;
 import com.waseda.weibin.smc.model.mc.modelchecker.SPIN;
 import com.waseda.weibin.smc.model.slicing.Slicer;
 import com.waseda.weibin.smc.model.slicing.slicer.FramaC;
+import com.waseda.weibin.smc.util.FileProcessor;
 import com.waseda.weibin.smc.util.Input;
+import com.waseda.weibin.smc.util.Output;
 import com.waseda.weibin.smc.util.ProgramStatus;
 import com.waseda.weibin.smc.view.CLIView;
 import com.waseda.weibin.smc.view.View;
@@ -31,6 +34,7 @@ public class ViewController {
 	private List<String> fileNames;
 	private List<String> ltls;
 	private List<String> variableNames;
+	private List<String> slicedFileNames;
 	
 	public void launch() {
 		// TODO Auto-generated method stub
@@ -58,6 +62,7 @@ public class ViewController {
 				break;
 			case SLICE:
 				processSlice();
+				processSlicedFileNames();
 				break;
 			case MODELEXTRACT:
 				processModelExtract();
@@ -65,12 +70,16 @@ public class ViewController {
 			case MODELCHECK:
 				processModelcheck();
 				break;
+			case PROCESSOUTPUTS:
+				processOutputs();
+				break;
 			default:
 				break;
 			}
 		}
 	}
 	
+
 	private void processInputs() {
 		// TODO Auto-generated method stub
 		processFileNameInputs();
@@ -137,22 +146,64 @@ public class ViewController {
 		System.out.println("\n===== Begin to modex =====");
 		modex = new Modex(fileNames, variableNames, ltls);
 		modex.extractModel();
+		
+		// Extract sliced model
+		Modex modexSliced = new Modex(slicedFileNames, variableNames, ltls);
+		modexSliced.extractModel();
+		
 		System.out.println("===== End of modex =====");
 		switchToModelCheckingStatus();
 	}
 	
 	private void processModelcheck() {
 		System.out.println("\n===== Begin to spin =====");
-		String outputDestinationFileName = "results_with_slicing.txt";
-		spin = new SPIN(outputDestinationFileName);
+		String outputDestinationFileName = "res_nosli.txt";
+		spin = new SPIN(fileNames, outputDestinationFileName);
 		spin.modelCheck();
 		System.out.println("output file: " + outputDestinationFileName);
+		// Model check the sliced model
+		String outputDestinationFileName2 = "res_sli.txt";
+		spin = new SPIN(slicedFileNames, outputDestinationFileName2);
+		spin.modelCheck();
+		
+		System.out.println("output file: " + outputDestinationFileName2);
 		System.out.println("===== End of spin =====");
+		switchToProcessOutputsStatus();
+	}
+	
+	private void processOutputs() {
+		System.out.println("\n===== Begin to output =====");
+		
+		// Find elapsed time
+		String contents = "elapsed time " + "\\d+\\.?\\d*" + " seconds";
+		String elapsedTime = "";
+		String elapsedTimeSli = "";
+		try {
+			elapsedTime = Output.findOutputNumber("res_nosli.txt", contents);
+			elapsedTimeSli = Output.findOutputNumber("res_sli.txt", contents);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		// Print elapsed time
+		System.out.println("elapsed time:\t\t" + elapsedTime + " seconds");
+		System.out.println("elapsed time (sli):\t: " + elapsedTimeSli + " seconds");
+		
+		
+		System.out.println("\n===== End of output =====");
 		switchToInitStatus();
 	}
 
+
 	private void showMessage(String msg) {
 		view.showMessage(msg);
+	}
+	
+	private void processSlicedFileNames() {
+		slicedFileNames = new ArrayList<>();
+		for (String fileName : fileNames) {
+			String name = FileProcessor.getFileNameWithoutSurfix(fileName, ".c") + "_sliced.c";
+			slicedFileNames.add(name);
+		}
 	}
 	
 	// Switch status
@@ -176,5 +227,8 @@ public class ViewController {
 	}
 	private void switchToModelExtractStatus() {
 		this.status = ProgramStatus.MODELEXTRACT;
+	}
+	private void switchToProcessOutputsStatus() {
+		this.status = ProgramStatus.PROCESSOUTPUTS;
 	}
 }

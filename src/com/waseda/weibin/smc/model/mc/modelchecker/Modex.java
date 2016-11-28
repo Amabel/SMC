@@ -28,8 +28,9 @@ public class Modex extends ModelChecker {
 		generatePrxFile();
 		extractTheModel();
 		attachLTLsToModel();
+		changeModelFileName();
 	}
-	
+
 	private void extractTheModel() {
 		// Execute command "modex xxx.c"
 		String fileName = fileNames.get(0);
@@ -53,6 +54,13 @@ public class Modex extends ModelChecker {
 					+ "\n}";
 		}
 		FileProcessor.appendContentsToFile("model", contents);
+	}
+	
+	private void changeModelFileName() {
+		// TODO Auto-generated method stub
+		String fileName = fileNames.get(0);
+		String destFileName = FileProcessor.getFileNameWithoutSurfix(fileName, ".c") + ".pml";
+		FileProcessor.changeFileName("model", destFileName);
 	}
 
 }
