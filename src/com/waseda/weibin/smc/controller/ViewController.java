@@ -184,9 +184,33 @@ public class ViewController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		// Find reached depth
+		contents = "depth reached " + "\\d+\\.?\\d*";
+		String reachedDepth = "";
+		String reachedDepthSli = "";
+		try {
+			reachedDepth = Output.findOutputNumber("res_nosli.txt", contents);
+			reachedDepthSli = Output.findOutputNumber("res_sli.txt", contents);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Find error numbers
+		contents = "errors: " + "\\d+\\.?\\d*";
+		String errorNumbers = "";
+		String errorNumbersSli = "";
+		try {
+			errorNumbers = Output.findOutputNumber("res_nosli.txt", contents);
+			errorNumbersSli = Output.findOutputNumber("res_sli.txt", contents);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+				
 		// Print elapsed time
-		System.out.println("elapsed time:\t\t" + elapsedTime + " seconds");
-		System.out.println("elapsed time (sli):\t: " + elapsedTimeSli + " seconds");
+		System.out.println("elapsed time:\t" + elapsedTime + "\t" + elapsedTimeSli + " seconds");
+		System.out.println("depth reached:\t" + reachedDepth + "\t" + reachedDepthSli);
+		System.out.println("errors:\t\t" + errorNumbers + "\t" + errorNumbersSli);
 		
 		
 		System.out.println("\n===== End of output =====");
