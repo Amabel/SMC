@@ -49,12 +49,12 @@ public class ViewController {
 			switch (status) {
 			case GETINPUTFILENAMES:
 				// Print the prompt
-				showMessage("> ");
+				showMessage("Input the filename: ");
 				getInputFileNames();
 				break;
 			case GETINPUTLTL:
 				// Print the prompt
-				showMessage("> ");
+				showMessage("Input the LTL: ");
 				getInputLTL();
 				break;
 			case PROCESSINPUTS:
@@ -172,7 +172,6 @@ public class ViewController {
 	}
 	
 	private void processOutputs() {
-		System.out.println("\n===== Begin to output =====");
 		
 		// Find elapsed time
 		String contents = "elapsed time " + "\\d+\\.?\\d*" + " seconds";
@@ -206,14 +205,42 @@ public class ViewController {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-				
+		
+		// Find state memory usage
+		contents = "\\s*\\d+\\.?\\d*\\s*" + "actual memory usage for states";
+		String stateMemoryUsage = "";
+		String stateMemoryUsageSli = "";
+		try {
+			stateMemoryUsage = Output.findOutputNumber("res_nosli.txt", contents);
+			stateMemoryUsageSli = Output.findOutputNumber("res_sli.txt", contents);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		// Find total memory usage
+		contents = "\\s*\\d+\\.?\\d*\\s*" + "total actual memory usage";
+		String totalMemoryUsage = "";
+		String totalMemoryUsageSli = "";
+		try {
+			totalMemoryUsage = Output.findOutputNumber("res_nosli.txt", contents);
+			totalMemoryUsageSli = Output.findOutputNumber("res_sli.txt", contents);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		System.out.println("\n===== Begin to output =====\n\n");
+		System.out.println("Output:\t\t\tnoSli\tSli");
 		// Print elapsed time
-		System.out.println("elapsed time:\t" + elapsedTime + "\t" + elapsedTimeSli + " seconds");
-		System.out.println("depth reached:\t" + reachedDepth + "\t" + reachedDepthSli);
-		System.out.println("errors:\t\t" + errorNumbers + "\t" + errorNumbersSli);
-		
-		
-		System.out.println("\n===== End of output =====");
+		System.out.println("elapsed time:\t\t" + elapsedTime + "\t" + elapsedTimeSli);
+		// Print reached depth
+		System.out.println("depth reached:\t\t" + reachedDepth + "\t" + reachedDepthSli);
+		// Print error numbers
+		System.out.println("errors:\t\t\t" + errorNumbers + "\t" + errorNumbersSli);
+		// Print state memory usage
+		System.out.println("memory usage(states):\t" + stateMemoryUsage + "\t" + stateMemoryUsageSli);
+		// Print total memory usage
+		System.out.println("memory usage(total):\t" + totalMemoryUsage + "\t" + totalMemoryUsageSli);
+		System.out.println("\n\n===== End of output =====");
 		switchToInitStatus();
 	}
 
