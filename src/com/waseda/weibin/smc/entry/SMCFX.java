@@ -21,10 +21,12 @@ public class SMCFX extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/com/waseda/weibin/smc/view/MainFrame.fxml"));  
-        Scene scene = new Scene(root, 600, 400);  
+        Scene scene = new Scene(root, 600, 400);
         primaryStage.initStyle(StageStyle.DECORATED);  
         primaryStage.setScene(scene);  
-        primaryStage.setTitle("JavaFX记事本");  
+        primaryStage.setMinHeight(420);
+        primaryStage.setMinWidth(600);
+        primaryStage.setTitle("SMC");  
         primaryStage.show();
 	}
 }

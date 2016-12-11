@@ -12,7 +12,7 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="layoutPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainFramecontroller">
+<AnchorPane fx:id="layoutPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waseda.weibin.smc.controller.MainFrameController">
    <children>
       <MenuBar layoutY="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -27,6 +27,11 @@
               <MenuItem mnemonicParsing="false" text="Delete" />
             </items>
           </Menu>
+            <Menu mnemonicParsing="false" text="Window">
+               <items>
+                  <MenuItem mnemonicParsing="false" text="Reset window size" />
+               </items>
+            </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
               <MenuItem mnemonicParsing="false" text="About" />
@@ -34,13 +39,13 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane fx:id="mainSplitPane" dividerPositions="0.33" layoutY="69.0" prefHeight="331.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.0">
+      <SplitPane fx:id="mainSplitPane" dividerPositions="0.33" layoutY="69.0" minHeight="300.0" minWidth="600.0" prefHeight="331.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane maxWidth="280.0" minHeight="0.0" minWidth="180.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <SplitPane fx:id="leftSplitPane" dividerPositions="0.5" layoutY="14.0" orientation="VERTICAL" prefHeight="331.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <SplitPane fx:id="leftSplitPane" dividerPositions="0.5" layoutY="14.0" minWidth="170.0" orientation="VERTICAL" prefHeight="331.0" prefWidth="175.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                      <AnchorPane minHeight="80.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
                               <ListView fx:id="fileListView" layoutX="13.0" layoutY="1.0" prefHeight="161.0" prefWidth="191.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
@@ -54,7 +59,7 @@
                <children>
                   <SplitPane fx:id="rightSplitPane" dividerPositions="0.75" orientation="VERTICAL" prefHeight="368.0" prefWidth="416.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                     <items>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
+                      <AnchorPane minHeight="80.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
                               <TextArea fx:id="fileContent" layoutX="14.0" prefHeight="272.0" prefWidth="413.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <contextMenu>
@@ -83,7 +88,7 @@
           <Button fx:id="buttonOpen" mnemonicParsing="false" text="Open" />
             <Button fx:id="buttonSave" mnemonicParsing="false" text="Save" />
             <Button fx:id="buttonVerify" mnemonicParsing="false" text="Verify" />
-            <TextField alignment="CENTER_RIGHT" promptText="LTL" />
+            <TextField alignment="CENTER_RIGHT" promptText="LTL formula" />
         </items>
       </ToolBar>
    </children>
