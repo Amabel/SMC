@@ -1,9 +1,12 @@
 package com.waseda.weibin.smc.util;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
@@ -29,7 +32,6 @@ public class FileProcessor {
 			writeContentsIntoFile(fileName, contents);
 			created = true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return created;
@@ -76,6 +78,38 @@ public class FileProcessor {
 		FileProcessor.deleteFile(shellScriptName);
 	}
 	
+    public static String readFile(File file) {  
+        StringBuilder resultStr = new StringBuilder();  
+        try {  
+            BufferedReader bReader = new BufferedReader(new FileReader(file));  
+            String line = bReader.readLine();  
+            while (line != null) {  
+                resultStr.append(line); 
+                resultStr.append(System.getProperty("line.separator"));
+                line = bReader.readLine();  
+            }  
+            bReader.close();  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+        return resultStr.toString();  
+    }
+    
+    public static String readFile(String fileName) {
+    	File file = new File("fileName");
+    	return readFile(file);
+    }
+  
+    public static void writeFile(File file, String str) {  
+        try {  
+          BufferedWriter bWriter = new BufferedWriter(new FileWriter(file));  
+          bWriter.write(str);  
+          bWriter.close();  
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+    }  
+	
 	private static Boolean writeContentsIntoFile(String fileName, String contents) throws IOException {
 		Boolean writed = false;
 		// Add a new line
@@ -95,10 +129,9 @@ public class FileProcessor {
             br = new BufferedReader(isr);
             StringBuffer buffer = new StringBuffer();
             
-            //文件原有内容
             for(int i=0; (temp =br.readLine())!=null; i++) {
                 buffer.append(temp);
-                // 行与行之间的分隔符 相当于“\n”
+                // separator
                 buffer = buffer.append(System.getProperty("line.separator"));
             }
             buffer.append(newContents);
