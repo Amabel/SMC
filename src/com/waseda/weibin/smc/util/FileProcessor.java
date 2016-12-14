@@ -109,6 +109,11 @@ public class FileProcessor {
             e.printStackTrace();  
         }  
     }  
+    
+    public static Boolean createDirectioy(String dirName) {
+    	
+		return createDirectoryWithDirName(dirName);
+    }
 	
 	private static Boolean writeContentsIntoFile(String fileName, String contents) throws IOException {
 		Boolean writed = false;
@@ -176,6 +181,15 @@ public class FileProcessor {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+		}
+		return created;
+	}
+	
+	private static Boolean createDirectoryWithDirName(String dirName) {
+		Boolean created = false;
+		File dir = new File(dirName);
+		if (!dir.exists()) {
+			created = dir.mkdirs();
 		}
 		return created;
 	}

@@ -85,7 +85,7 @@
       </SplitPane>
       <ToolBar layoutY="29.0" prefHeight="0.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
         <items>
-          <Button fx:id="buttonOpen" mnemonicParsing="false" text="Open" />
+          <Button fx:id="buttonOpen" mnemonicParsing="false" onAction="#onButtonOpen" text="Open" />
             <Button fx:id="buttonSave" mnemonicParsing="false" text="Save" />
             <Button fx:id="buttonVerify" mnemonicParsing="false" text="Verify" />
             <TextField alignment="CENTER_RIGHT" promptText="LTL formula" />

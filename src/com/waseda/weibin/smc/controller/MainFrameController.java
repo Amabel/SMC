@@ -1,12 +1,14 @@
 package com.waseda.weibin.smc.controller;
 
 
+import java.awt.Desktop.Action;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import com.waseda.weibin.smc.util.Constants;
 import com.waseda.weibin.smc.util.FileProcessor;
 
 import javafx.collections.FXCollections;
@@ -76,10 +78,19 @@ public class MainFrameController {
     @FXML
     void onMenuItemOpen(ActionEvent event) {
     	List<File> files = openFiles();
-    	for (File file : files) {
-			fileNameList.add(file.getName());
-		}
-    	setListView();
+    	if (files != null) {	
+	    	for (File file : files) {
+	    		// Update file list
+				fileNameList.add(file.getName());
+			}
+	    	// Set to the list view
+	    	setListView();
+    	}
+    }
+    
+    @FXML
+    void onButtonOpen(ActionEvent event) {
+    	onMenuItemOpen(event);
     }
     
     
@@ -101,6 +112,13 @@ public class MainFrameController {
     
     @FXML
     void initialize() {
+    	// Initialize processes
+    	
+    	// Create a temporal directory
+    	String tempDirName = Constants.TEMP_DIR_NAME;
+    	FileProcessor.createDirectioy(tempDirName);
+    	
+    	// Listeners
     	fileListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -111,7 +129,7 @@ public class MainFrameController {
 			    }
 			}
     	});
-    
+    	
     }
 }
 
