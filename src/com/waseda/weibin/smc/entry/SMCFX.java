@@ -1,6 +1,9 @@
 package com.waseda.weibin.smc.entry;
 
 
+import com.waseda.weibin.smc.util.Constants;
+import com.waseda.weibin.smc.util.FileProcessor;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -29,4 +32,12 @@ public class SMCFX extends Application {
         primaryStage.setTitle("SMC");  
         primaryStage.show();
 	}
+	
+    @Override
+    public void stop() {
+    	// Delete related files (temp directory)
+    	String tempDirName = Constants.TEMP_DIR_NAME;
+    	FileProcessor.deleteFile(tempDirName);
+    	
+    }
 }
