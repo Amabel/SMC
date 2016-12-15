@@ -1,12 +1,9 @@
 package com.waseda.weibin.smc.model.slicing.slicer;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Pattern;
 import com.waseda.weibin.smc.model.slicing.Slicer;
 import com.waseda.weibin.smc.util.Command;
 import com.waseda.weibin.smc.util.FileProcessor;
-import com.waseda.weibin.smc.util.Log4j2;
 
 /**
  * @author  Weibin Luo 

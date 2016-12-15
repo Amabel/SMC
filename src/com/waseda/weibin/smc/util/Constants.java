@@ -4,5 +4,5 @@ package com.waseda.weibin.smc.util;
  * @version Created on Dec 14, 2016 6:07:37 PM
  */
 public interface Constants {
-	public static final String TEMP_DIR_NAME = "temp";
+	public static final String TEMP_DIR_NAME = "temp/";
 }

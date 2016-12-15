@@ -1,13 +1,12 @@
 package com.waseda.weibin.smc.controller;
 
 
-import java.awt.Desktop.Action;
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.filechooser.FileNameExtensionFilter;
+import org.apache.logging.log4j.Logger;
 
+import com.waseda.weibin.smc.entry.SMCFX;
 import com.waseda.weibin.smc.util.Constants;
 import com.waseda.weibin.smc.util.FileProcessor;
 
@@ -64,6 +63,8 @@ public class MainFrameController {
     private Button buttonVerify;
     
     private ObservableList<String> fileNameList = FXCollections.observableArrayList();
+    
+    private Logger logger = SMCFX.logger;
 
     @FXML
     void onContentContextMenuItemSelectAll(ActionEvent event) {
@@ -77,32 +78,42 @@ public class MainFrameController {
 
     @FXML
     void onMenuItemOpen(ActionEvent event) {
+    	openFile();
+    }
+    
+    @FXML
+    void onButtonOpen(ActionEvent event) {
+    	openFile();
+    }
+    
+    // Called when menuItemOpen or buttonOpen is clicked
+    private void openFile() {
     	List<File> files = openFiles();
     	if (files != null) {	
 	    	for (File file : files) {
 	    		// Update file list
-				fileNameList.add(file.getName());
+	    		String fileName = file.getName();
+				fileNameList.add(fileName);
+				// Copy file to temp directory
+	    		String destFilePath = Constants.TEMP_DIR_NAME + fileName;
+	    		File destFile = new File(destFilePath);
+	    		FileProcessor.copyFile(file, destFile);
 			}
 	    	// Set to the list view
 	    	setListView();
     	}
     }
-    
-    @FXML
-    void onButtonOpen(ActionEvent event) {
-    	onMenuItemOpen(event);
-    }
-    
-    
-    
+    // Called by openFile() to open multiple files
     private List<File> openFiles() {
     	FileChooser fileChooser = new FileChooser();  
         return fileChooser.showOpenMultipleDialog(layoutPane.getScene().getWindow());
     }
-    
+    // Called by the action listener of listView to show the contents of the file on the right pane
     private void showFileContents(String fileName) {
-    	if (fileName != null) {
-    		fileContent.setText(FileProcessor.readFile(fileName));  
+    	String tempFileName = Constants.TEMP_DIR_NAME + fileName;
+    	logger.debug("tempFileName = " + tempFileName);
+    	if (tempFileName != null) {
+    		fileContent.setText(FileProcessor.readFile(tempFileName));  
     	}
     }
     
@@ -122,7 +133,7 @@ public class MainFrameController {
     	fileListView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
+				// When double clicked
 				if (event.getButton() == MouseButton.PRIMARY && event.getClickCount() == 2) {
 					String fileName = fileListView.getSelectionModel().getSelectedItem();
 					showFileContents(fileName);

@@ -1,6 +1,11 @@
 package com.waseda.weibin.smc.entry;
 
 
+import java.io.File;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.waseda.weibin.smc.util.Constants;
 import com.waseda.weibin.smc.util.FileProcessor;
 
@@ -17,6 +22,8 @@ import javafx.stage.StageStyle;
  */
 public class SMCFX extends Application {
 
+	public static Logger logger = LogManager.getLogger(SMCFX.class.getName());
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -24,7 +31,7 @@ public class SMCFX extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/com/waseda/weibin/smc/view/MainFrame.fxml"));  
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 800, 600);
         primaryStage.initStyle(StageStyle.DECORATED);  
         primaryStage.setScene(scene);  
         primaryStage.setMinHeight(420);
@@ -36,8 +43,7 @@ public class SMCFX extends Application {
     @Override
     public void stop() {
     	// Delete related files (temp directory)
-    	String tempDirName = Constants.TEMP_DIR_NAME;
-    	FileProcessor.deleteFile(tempDirName);
-    	
+    	File tempFile = new File(Constants.TEMP_DIR_NAME);
+    	FileProcessor.deleteDirectory(tempFile);
     }
 }

@@ -12,7 +12,7 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="layoutPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waseda.weibin.smc.controller.MainFrameController">
+<AnchorPane fx:id="layoutPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waseda.weibin.smc.controller.MainFrameController">
    <children>
       <MenuBar layoutY="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -39,7 +39,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane fx:id="mainSplitPane" dividerPositions="0.33" layoutY="69.0" minHeight="300.0" minWidth="600.0" prefHeight="331.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.0">
+      <SplitPane fx:id="mainSplitPane" dividerPositions="0.25" layoutY="69.0" minHeight="300.0" minWidth="600.0" prefHeight="331.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.0">
         <items>
           <AnchorPane maxWidth="280.0" minHeight="0.0" minWidth="180.0" prefHeight="160.0" prefWidth="100.0">
                <children>

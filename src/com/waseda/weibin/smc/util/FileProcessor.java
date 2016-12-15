@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
+import org.apache.commons.io.FileUtils;
+
 /**
  * @author  Weibin Luo
  * @version Created on Nov 26, 2016 10:25:57 PM
@@ -67,6 +69,15 @@ public class FileProcessor {
         return deleted;
 	}
 	
+	public static void deleteDirectory(File directory) {
+		try {
+			FileUtils.deleteDirectory(directory);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static String getFileNameWithoutSurfix(String fileName, String surfix) {
 		return fileName.substring(0, fileName.length() - surfix.length());
 	}
@@ -96,7 +107,7 @@ public class FileProcessor {
     }
     
     public static String readFile(String fileName) {
-    	File file = new File("fileName");
+    	File file = new File(fileName);
     	return readFile(file);
     }
   
@@ -111,8 +122,16 @@ public class FileProcessor {
     }  
     
     public static Boolean createDirectioy(String dirName) {
-    	
 		return createDirectoryWithDirName(dirName);
+    }
+    
+    public static void copyFile(File srcFile, File destFile) {
+    	try {
+			FileUtils.copyFile(srcFile, destFile);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 	
 	private static Boolean writeContentsIntoFile(String fileName, String contents) throws IOException {
