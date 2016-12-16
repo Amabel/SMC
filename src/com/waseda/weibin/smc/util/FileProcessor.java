@@ -121,6 +121,18 @@ public class FileProcessor {
         }  
     }  
     
+    public static void writeStringToFile(String fileName, String content, Boolean append) {
+    	String encoding = null;
+    	String filePath = Constants.TEMP_DIR_NAME + fileName;
+    	File file = new File(filePath);
+    	try {
+			FileUtils.writeStringToFile(file, content, encoding, append);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+    
     public static Boolean createDirectioy(String dirName) {
 		return createDirectoryWithDirName(dirName);
     }

@@ -19,6 +19,7 @@
           <Menu mnemonicParsing="false" text="File">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#onMenuItemOpen" text="Open..." />
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuItemOpen" text="Save" />
               <MenuItem mnemonicParsing="false" onAction="#onMenuItemClose" text="Exit" />
             </items>
           </Menu>
@@ -86,7 +87,7 @@
       <ToolBar layoutY="29.0" prefHeight="0.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
         <items>
           <Button fx:id="buttonOpen" mnemonicParsing="false" onAction="#onButtonOpen" text="Open" />
-            <Button fx:id="buttonSave" mnemonicParsing="false" text="Save" />
+            <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#onButtonSave" text="Save" />
             <Button fx:id="buttonVerify" mnemonicParsing="false" text="Verify" />
             <TextField alignment="CENTER_RIGHT" promptText="LTL formula" />
         </items>

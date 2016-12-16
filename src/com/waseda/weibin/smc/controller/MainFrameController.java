@@ -9,6 +9,7 @@ import org.apache.logging.log4j.Logger;
 import com.waseda.weibin.smc.entry.SMCFX;
 import com.waseda.weibin.smc.util.Constants;
 import com.waseda.weibin.smc.util.FileProcessor;
+import com.waseda.weibin.smc.view.CLIView;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -63,7 +64,7 @@ public class MainFrameController {
     private Button buttonVerify;
     
     private ObservableList<String> fileNameList = FXCollections.observableArrayList();
-    
+    private ViewController viewController = new ViewController();
     private Logger logger = SMCFX.logger;
 
     @FXML
@@ -84,6 +85,16 @@ public class MainFrameController {
     @FXML
     void onButtonOpen(ActionEvent event) {
     	openFile();
+    }
+    
+    @FXML
+    void onMenuItemSave(ActionEvent event) {
+    	saveFile();
+    }
+    
+    @FXML
+    void onButtonSave(ActionEvent event) {
+    	saveFile();
     }
     
     // Called when menuItemOpen or buttonOpen is clicked
@@ -114,6 +125,16 @@ public class MainFrameController {
     	logger.debug("tempFileName = " + tempFileName);
     	if (tempFileName != null) {
     		fileContent.setText(FileProcessor.readFile(tempFileName));  
+    	}
+    }
+    
+    // Called when menuItemSave or buttonSava is clicked
+    private void saveFile() {
+    	String content = fileContent.getText();
+    	String fileName = fileListView.getSelectionModel().getSelectedItem();
+    	if (fileName != null) {
+    		FileProcessor.writeStringToFile(fileName, content, false);
+    		logger.debug("fileName: " + fileName);
     	}
     }
     
