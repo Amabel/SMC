@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -12,13 +13,14 @@
 <?import javafx.scene.control.ToolBar?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="layoutPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waseda.weibin.smc.controller.MainFrameController">
+<AnchorPane fx:id="layoutPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waseda.weibin.smc.controller.MainFrameController">
    <children>
-      <MenuBar layoutY="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <MenuBar AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#onMenuItemOpen" text="Open..." />
+                  <MenuItem mnemonicParsing="false" onAction="#onMenuItemSave" text="Save" />
               <MenuItem mnemonicParsing="false" onAction="#onMenuItemClose" text="Exit" />
             </items>
           </Menu>
@@ -39,7 +41,7 @@
           </Menu>
         </menus>
       </MenuBar>
-      <SplitPane fx:id="mainSplitPane" dividerPositions="0.33" layoutY="69.0" minHeight="300.0" minWidth="600.0" prefHeight="331.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.0">
+      <SplitPane fx:id="mainSplitPane" dividerPositions="0.25" layoutY="69.0" minHeight="300.0" minWidth="600.0" prefHeight="331.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="67.0">
         <items>
           <AnchorPane maxWidth="280.0" minHeight="0.0" minWidth="180.0" prefHeight="160.0" prefWidth="100.0">
                <children>
@@ -70,6 +72,7 @@
                                     </ContextMenu>
                                  </contextMenu>
                               </TextArea>
+                              <ButtonBar layoutX="41.0" layoutY="111.0" prefHeight="40.0" prefWidth="200.0" />
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
@@ -86,9 +89,10 @@
       <ToolBar layoutY="29.0" prefHeight="0.0" prefWidth="600.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="29.0">
         <items>
           <Button fx:id="buttonOpen" mnemonicParsing="false" onAction="#onButtonOpen" text="Open" />
-            <Button fx:id="buttonSave" mnemonicParsing="false" text="Save" />
-            <Button fx:id="buttonVerify" mnemonicParsing="false" text="Verify" />
-            <TextField alignment="CENTER_RIGHT" promptText="LTL formula" />
+            <Button fx:id="buttonSave" mnemonicParsing="false" onAction="#onButtonSave" text="Save" />
+            <Button fx:id="buttonVerify" mnemonicParsing="false" onAction="#onButtonVerify" text="Verify" />
+            <TextField fx:id="textFieldLTLFormula" alignment="CENTER_RIGHT" onAction="#onTextFieldLTLFormula" promptText="LTL formula" />
+            <Button mnemonicParsing="false" text="Multiple LTLs" />
         </items>
       </ToolBar>
    </children>
