@@ -9,6 +9,18 @@ import java.io.InputStreamReader;
  */
 public class Command {
 
+	public static void switchDir(String dir) {
+		String command = "cd " + dir;
+		String shellScriptName = "switchDir.sh";
+		executeCommandInShell(command, shellScriptName);
+	}
+	
+	public static void showPwd() {
+		String command = "pwd";
+		String shellScriptName = "pwd.sh";
+		executeCommandInShell(command, shellScriptName);
+	}
+	
 	public static void executeCommandInShell(String command, String shellScriptName) {
 		String fileName = shellScriptName;
 		// Create a new shell file and write commands

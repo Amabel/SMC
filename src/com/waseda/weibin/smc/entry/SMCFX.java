@@ -21,8 +21,6 @@ import javafx.stage.StageStyle;
  * @version Created on Dec 11, 2016 1:41:53 PM
  */
 public class SMCFX extends Application {
-
-	public static Logger logger = LogManager.getLogger(SMCFX.class.getName());
 	
 	public static void main(String[] args) {
 		launch(args);

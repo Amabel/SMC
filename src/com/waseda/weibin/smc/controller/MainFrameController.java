@@ -20,6 +20,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -58,14 +59,16 @@ public class MainFrameController {
     private Button buttonOpen;
 
     @FXML
-    private Button buttonOpen1;
+    private Button buttonSave;
 
     @FXML
     private Button buttonVerify;
     
+    @FXML
+    private TextField textFieldLTLFormula;
+    
     private ObservableList<String> fileNameList = FXCollections.observableArrayList();
-    private ViewController viewController = new ViewController();
-    private Logger logger = SMCFX.logger;
+    private ViewController viewController = new ViewController("gui");
 
     @FXML
     void onContentContextMenuItemSelectAll(ActionEvent event) {
@@ -97,6 +100,16 @@ public class MainFrameController {
     	saveFile();
     }
     
+    @FXML
+    void onTextFieldLTLFormula(ActionEvent event) {
+    	verify();
+    }
+    
+    @FXML
+    void onButtonVerify(ActionEvent event) {
+    	verify();
+    }
+    
     // Called when menuItemOpen or buttonOpen is clicked
     private void openFile() {
     	List<File> files = openFiles();
@@ -122,7 +135,6 @@ public class MainFrameController {
     // Called by the action listener of listView to show the contents of the file on the right pane
     private void showFileContents(String fileName) {
     	String tempFileName = Constants.TEMP_DIR_NAME + fileName;
-    	logger.debug("tempFileName = " + tempFileName);
     	if (tempFileName != null) {
     		fileContent.setText(FileProcessor.readFile(tempFileName));  
     	}
@@ -132,14 +144,24 @@ public class MainFrameController {
     private void saveFile() {
     	String content = fileContent.getText();
     	String fileName = fileListView.getSelectionModel().getSelectedItem();
+    	System.out.println("Save to file: " + fileName);
     	if (fileName != null) {
     		FileProcessor.writeStringToFile(fileName, content, false);
-    		logger.debug("fileName: " + fileName);
     	}
     }
     
     private void setListView() {
     	fileListView.setItems(fileNameList);
+    }
+    
+    private void verify() {
+    	String ltlInput = textFieldLTLFormula.getText();
+    	String fileName = fileListView.getSelectionModel().getSelectedItem();
+    	System.out.println("Verify file: " + fileName);
+    	viewController.setLtlsInput(ltlInput);
+    	viewController.setFileNamesInput(fileName);
+    	viewController.setStatusProcessInputs();
+    	viewController.launch();
     }
     
     @FXML

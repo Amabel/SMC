@@ -11,6 +11,7 @@ import com.waseda.weibin.smc.model.mc.modelchecker.Modex;
 import com.waseda.weibin.smc.model.mc.modelchecker.SPIN;
 import com.waseda.weibin.smc.model.slicing.Slicer;
 import com.waseda.weibin.smc.model.slicing.slicer.FramaC;
+import com.waseda.weibin.smc.util.Constants;
 import com.waseda.weibin.smc.util.FileProcessor;
 import com.waseda.weibin.smc.util.Input;
 import com.waseda.weibin.smc.util.Output;
@@ -35,17 +36,42 @@ public class ViewController {
 	private List<String> ltls;
 	private List<String> variableNames;
 	private List<String> slicedFileNames;
+	private Boolean guiMode = false;
+	
+	public ViewController() {
+		
+	}
+	public ViewController(String mode) {
+		if (mode.equalsIgnoreCase("gui")) {
+			this.guiMode = true;
+		}
+		
+	}
+	public void setFileNamesInput(String fileNamesInput) {
+		this.fileNamesInput = fileNamesInput;
+	}
+
+	public void setLtlsInput(String ltlsInput) {
+		this.ltlsInput = ltlsInput;
+	}
+	
+	public void setStatusProcessInputs() {
+		switchToProcessInputsStatus();
+	}
 	
 	public void launch() {
 		// TODO Auto-generated method stub
 		view = new CLIView();
-		fileNamesInput = "";
-		switchToInitStatus();
+		if (!guiMode) {
+			fileNamesInput = "";
+			switchToInitStatus();
+		}
 		
 		while (true) {
 			if (status == ProgramStatus.INITIALIZE) {
 				switchToGetInputFileNamesStatus();
 			}
+			System.out.println("status = " + status);
 			switch (status) {
 			case GETINPUTFILENAMES:
 				// Print the prompt
@@ -90,11 +116,17 @@ public class ViewController {
 	private void processFileNameInputs() {
 		fileNames = new ArrayList<String>();
 		// Convert the input to array by the separator " "
+		System.out.println("fileNamesInput = " + fileNamesInput);
 		String[] inputs = fileNamesInput.split(" ");
 		Pattern p = Pattern.compile("(\\w)+\\.c");
-		for (String string : inputs) {
-			if (p.matcher(string).matches()) {
-				fileNames.add(string);
+		for (String fileName : inputs) {
+			if (p.matcher(fileName).matches()) {
+				if (!guiMode) {
+					fileNames.add(fileName);					
+				} else {
+					String fileNameWithPath = Constants.TEMP_DIR_NAME + fileName;
+					fileNames.add(fileNameWithPath);
+				}
 			} else {
 				System.out.println("Error when processing filename inputs");
 			}

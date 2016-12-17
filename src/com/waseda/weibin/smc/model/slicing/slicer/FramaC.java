@@ -3,6 +3,7 @@ package com.waseda.weibin.smc.model.slicing.slicer;
 import java.util.List;
 import com.waseda.weibin.smc.model.slicing.Slicer;
 import com.waseda.weibin.smc.util.Command;
+import com.waseda.weibin.smc.util.Constants;
 import com.waseda.weibin.smc.util.FileProcessor;
 
 /**
@@ -25,6 +26,8 @@ public class FramaC extends Slicer {
 	@Override
 	public void slice() {
 		// TODO Auto-generated method stub
+		String dir = Constants.TEMP_DIR_NAME;
+		Command.switchDir(dir);
 		String command = createCommand();
 		doSlice(command);
 	}
@@ -64,7 +67,7 @@ public class FramaC extends Slicer {
 		// Generate the target filename
 		String targetFileName = FileProcessor.getFileNameWithoutSurfix(fileNames.get(0), ".c") + "_sliced.c";
 		// Generate the slicing command
-		// EG. of command: $ frama-c <source files> <desired slicing mode and appropriate options> -then-on 'Slicing export' -print
+		// Eg. of command: $ frama-c <source files> <desired slicing mode and appropriate options> -then-on 'Slicing export' -print
 		// Create a new file
 		cmd = "frama-c " + str + " -then-on 'Slicing export' -print -ocode " + targetFileName;
 		// Does not create a new file
