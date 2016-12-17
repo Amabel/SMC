@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.waseda.weibin.smc.model.Results;
 import com.waseda.weibin.smc.model.mc.ModelChecker;
 import com.waseda.weibin.smc.model.mc.modelchecker.Modex;
 import com.waseda.weibin.smc.model.mc.modelchecker.SPIN;
@@ -18,6 +19,9 @@ import com.waseda.weibin.smc.util.Output;
 import com.waseda.weibin.smc.util.ProgramStatus;
 import com.waseda.weibin.smc.view.CLIView;
 import com.waseda.weibin.smc.view.View;
+
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * @author  Weibin Luo
@@ -37,6 +41,7 @@ public class ViewController {
 	private List<String> variableNames;
 	private List<String> slicedFileNames;
 	private Boolean guiMode = false;
+	private ObservableList<Results> resultsData;
 	
 	public ViewController() {
 		
@@ -88,7 +93,6 @@ public class ViewController {
 				break;
 			case SLICE:
 				processSlice();
-				processSlicedFileNames();
 				break;
 			case MODELEXTRACT:
 				processModelExtract();
@@ -106,7 +110,7 @@ public class ViewController {
 	}
 	
 
-	private void processInputs() {
+	public void processInputs() {
 		// TODO Auto-generated method stub
 		processFileNameInputs();
 		processLTLInputs();
@@ -165,16 +169,21 @@ public class ViewController {
 		switchToProcessInputsStatus();
 	}
 	
-	private void processSlice() {
+	public ObservableList<Results> getResultsData() {
+		return resultsData;
+	}
+	
+	public void processSlice() {
 		// Do the slice
 		System.out.println("\n===== Begin to slice =====");
 		slicer = new FramaC(fileNames, variableNames);
 		slicer.slice();
 		System.out.println("===== End of slicing =====");
+		processSlicedFileNames();
 		switchToModelExtractStatus();
 	}
 	
-	private void processModelExtract() {
+	public void processModelExtract() {
 		System.out.println("\n===== Begin to modex =====");
 		modex = new Modex(fileNames, variableNames, ltls);
 		modex.extractModel();
@@ -187,7 +196,7 @@ public class ViewController {
 		switchToModelCheckingStatus();
 	}
 	
-	private void processModelcheck() {
+	public void processModelcheck() {
 		System.out.println("\n===== Begin to spin =====");
 		String outputDestinationFileName = "res_nosli.txt";
 		spin = new SPIN(fileNames, outputDestinationFileName);
@@ -203,7 +212,7 @@ public class ViewController {
 		switchToProcessOutputsStatus();
 	}
 	
-	private void processOutputs() {
+	public void processOutputs() {
 		
 		// Find elapsed time
 		String contents = "elapsed time " + "\\d+\\.?\\d*" + " seconds";
@@ -267,12 +276,36 @@ public class ViewController {
 		// Print reached depth
 		System.out.println("depth reached:\t\t" + reachedDepth + "\t" + reachedDepthSli);
 		// Print error numbers
-		System.out.println("errors:\t\t\t" + errorNumbers + "\t" + errorNumbersSli);
+		System.out.println("errors found:\t\t" + errorNumbers + "\t" + errorNumbersSli);
 		// Print state memory usage
 		System.out.println("memory usage(states):\t" + stateMemoryUsage + "\t" + stateMemoryUsageSli);
 		// Print total memory usage
 		System.out.println("memory usage(total):\t" + totalMemoryUsage + "\t" + totalMemoryUsageSli);
 		System.out.println("\n\n===== End of output =====");
+		
+		// Output the results to compare.txt
+		String strElapsedTime = "elapsed time:\t\t" + elapsedTime + "\t" + elapsedTimeSli;
+		String strReachedDepth = "depth reached:\t\t" + reachedDepth + "\t" + reachedDepthSli;
+		String strErrorNumbers = "errors found:\t\t" + errorNumbers + "\t" + errorNumbersSli;
+		String strStateMemoryUsage = "mem usage(states):\t" + stateMemoryUsage + "\t" + stateMemoryUsageSli;
+		String strTotalMemoryUsage = "mem usage(total):\t" + totalMemoryUsage + "\t" + totalMemoryUsageSli;
+		String resFileName = "compare.txt";
+//		String resFilePath = Constants.TEMP_DIR_NAME + resFileName;
+		String strTitle = "\t\t\tno slicing\twith slicing";
+		FileProcessor.writeStringToFile(resFileName, strTitle + "\n", true);
+		FileProcessor.writeStringToFile(resFileName, strElapsedTime + "\n", true);
+		FileProcessor.writeStringToFile(resFileName, strReachedDepth + "\n", true);
+		FileProcessor.writeStringToFile(resFileName, strErrorNumbers + "\n", true);
+		FileProcessor.writeStringToFile(resFileName, strStateMemoryUsage + "\n", true);
+		FileProcessor.writeStringToFile(resFileName, strTotalMemoryUsage + "\n", true);
+		resultsData = FXCollections.observableArrayList(
+					new Results("Elapsed time", elapsedTime, elapsedTimeSli),
+					new Results("Depth reached", reachedDepth, reachedDepthSli),
+					new Results("Errors found", errorNumbers, errorNumbersSli),
+					new Results("mem usage(states)", stateMemoryUsage, stateMemoryUsageSli),
+					new Results("mem usage(total)", totalMemoryUsage, totalMemoryUsageSli)
+				);
+		
 		switchToInitStatus();
 	}
 

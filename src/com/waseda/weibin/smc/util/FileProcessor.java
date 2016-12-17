@@ -74,7 +74,8 @@ public class FileProcessor {
 			FileUtils.deleteDirectory(directory);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+//			e.printStackTrace();
+			System.out.println("deleteDir exceptions");
 		}
 	}
 	
