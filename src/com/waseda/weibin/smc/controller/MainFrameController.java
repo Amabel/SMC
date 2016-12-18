@@ -2,6 +2,7 @@ package com.waseda.weibin.smc.controller;
 
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import com.waseda.weibin.smc.model.Results;
@@ -13,7 +14,11 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
@@ -25,6 +30,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  * @author  Weibin Luo
@@ -34,104 +41,71 @@ import javafx.stage.FileChooser;
 
 public class MainFrameController {
 
-    @FXML
-    private AnchorPane layoutPane;
-
-    @FXML
-    private SplitPane mainSplitPane;
-
-    @FXML
-    private SplitPane leftSplitPane;
-
-    @FXML
-    private ListView<String> fileListView;
-
-    @FXML
-    private SplitPane rightSplitPane;
-
-    @FXML
-    private TextArea fileContent;
-
-    @FXML
-    private TextArea messageArea;
-
-    @FXML
-    private Button buttonOpen;
-
-    @FXML
-    private Button buttonSave;
-
-    @FXML
-    private Button buttonVerify;
-
-    @FXML
-    private TextField textFieldLTLFormula;
-    
-    @FXML
-    private Button buttonTest;
-
-    @FXML
-    private TableView<Results> tableViewCompare;
-    @FXML
-    private TableColumn<Results, String> tableViewCompareAttributeColumn;
-    @FXML
-    private TableColumn<Results, String> tableViewCompareNoSlicingColumn;
-    @FXML
-    private TableColumn<Results, String> tableViewCompareWithSlicingColumn;
-    
+    @FXML private AnchorPane layoutPane;
+    @FXML private SplitPane mainSplitPane;
+    @FXML private SplitPane leftSplitPane;
+    @FXML private ListView<String> fileListView;
+    @FXML private SplitPane rightSplitPane;
+    @FXML private TextArea fileContent;
+    @FXML private TextArea messageArea;
+    @FXML private Button buttonOpen;
+    @FXML private Button buttonSave;
+    @FXML private Button buttonVerify;
+    @FXML private TextField textFieldLTLFormula;
+    @FXML private Button buttonTest;
+    @FXML private TableView<Results> tableViewCompare;
+    @FXML private TableColumn<Results, String> tableViewCompareAttributeColumn;
+    @FXML private TableColumn<Results, String> tableViewCompareNoSlicingColumn;
+    @FXML private TableColumn<Results, String> tableViewCompareWithSlicingColumn;
+    @FXML private CheckBox checkBoxCompare;
+    @FXML private Button buttonAddLTL;
     
     private ObservableList<String> fileNameList = FXCollections.observableArrayList();
     private ViewController viewController = new ViewController("gui");
 
-    @FXML
-    void onContentContextMenuItemSelectAll(ActionEvent event) {
-
+    @FXML void onContentContextMenuItemSelectAll(ActionEvent event) {
+    	fileContent.selectAll();
     }
     
-    @FXML
-    void onMenuItemClose(ActionEvent event) {
+    @FXML void onMenuItemClose(ActionEvent event) {
     	fileNameList.remove(0);
     }
 
-    @FXML
-    void onMenuItemOpen(ActionEvent event) {
+    @FXML void onMenuItemOpen(ActionEvent event) {
     	openFile();
     }
     
-    @FXML
-    void onButtonOpen(ActionEvent event) {
+    @FXML void onButtonOpen(ActionEvent event) {
     	openFile();
     }
     
-    @FXML
-    void onMenuItemSave(ActionEvent event) {
+    @FXML void onMenuItemSave(ActionEvent event) {
     	saveFile();
     }
     
-    @FXML
-    void onButtonSave(ActionEvent event) {
+    @FXML void onButtonSave(ActionEvent event) {
     	saveFile();
     }
     
-    @FXML
-    void onTextFieldLTLFormula(ActionEvent event) {
+    @FXML void onTextFieldLTLFormula(ActionEvent event) {
     	verify();
     }
     
-    @FXML
-    void onButtonVerify(ActionEvent event) {
+    @FXML void onButtonVerify(ActionEvent event) {
     	verify();
     }
     
-    @FXML
-    void onListViewContxtMenuItemRemove(ActionEvent event) {
+    @FXML void onListViewContxtMenuItemRemove(ActionEvent event) {
     	String fileName = fileListView.getSelectionModel().getSelectedItem();
     	removeFileFromListView(fileName);
     }
-    @FXML
-    void onListViewContxtMenuItemRemoveAll(ActionEvent event) {
+    
+    @FXML void onListViewContxtMenuItemRemoveAll(ActionEvent event) {
     	removeAllFileFromListView();
     }
+//    @FXML void onButtonAddLTL(ActionEvent event) {
+//    	
+//    }
 
     
     // Called when menuItemOpen or buttonOpen is clicked
@@ -232,13 +206,11 @@ public class MainFrameController {
     	
     }
     
-   @FXML
-   void onButtonTest(ActionEvent event) {
+   @FXML void onButtonTest(ActionEvent event) {
 	   FxDialogs.showInformation(null, "Good!");
    }
     
-    @FXML
-    void initialize() {
+    @FXML void initialize() {
     	// Initialize processes
     	
     	// Create a temporal directory
@@ -255,6 +227,26 @@ public class MainFrameController {
 					showFileContents(fileName);
 			    }
 			}
+    	});
+    	
+    	buttonAddLTL.setOnAction(new EventHandler<ActionEvent>() {
+    	    public void handle(ActionEvent event) {
+    	        Parent root;
+    	        try {
+    	            root = FXMLLoader.load(getClass().getResource("/com/waseda/weibin/smc/view/AddLTLFrame.fxml"));
+    	            Stage stage = new Stage();
+    	            stage.initStyle(StageStyle.DECORATED);
+    	            stage.setScene(new Scene(root, 400, 250));
+    	            stage.setMinHeight(250);
+    	            stage.setMinWidth(400);
+    	            stage.setTitle("add LTLs");  
+    	            stage.setResizable(false);
+    	            stage.show();
+    	        }
+    	        catch (IOException e) {
+    	            e.printStackTrace();
+    	        }
+    	    }
     	});
    
     }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ContextMenu?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Menu?>
@@ -108,8 +109,9 @@
           <Button fx:id="buttonOpen" mnemonicParsing="false" onAction="#onButtonOpen" text="Open" />
             <Button fx:id="buttonSave" mnemonicParsing="false" text="Save" />
             <Button fx:id="buttonVerify" mnemonicParsing="false" onAction="#onButtonVerify" text="Verify" />
+            <CheckBox fx:id="checkBoxCompare" mnemonicParsing="false" selected="true" text="Compare" />
             <TextField fx:id="textFieldLTLFormula" alignment="CENTER_RIGHT" onAction="#onTextFieldLTLFormula" promptText="LTL formula" />
-            <Button fx:id="buttonTest" mnemonicParsing="false" onAction="#onButtonTest" text="Test" />
+            <Button fx:id="buttonAddLTL" mnemonicParsing="false" style="-fx-border-radius: 50;" text="+" />
         </items>
       </ToolBar>
    </children>

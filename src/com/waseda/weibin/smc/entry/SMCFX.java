@@ -28,6 +28,7 @@ public class SMCFX extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/com/waseda/weibin/smc/view/MainFrame.fxml"));  
+//        Parent root = FXMLLoader.load(getClass().getResource("/com/waseda/weibin/smc/view/AddLTLFrame.fxml"));  
         Scene scene = new Scene(root, 800, 600);
         primaryStage.initStyle(StageStyle.DECORATED);  
         primaryStage.setScene(scene);  

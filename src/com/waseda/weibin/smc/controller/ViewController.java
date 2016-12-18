@@ -283,21 +283,21 @@ public class ViewController {
 		System.out.println("memory usage(total):\t" + totalMemoryUsage + "\t" + totalMemoryUsageSli);
 		System.out.println("\n\n===== End of output =====");
 		
-		// Output the results to compare.txt
-		String strElapsedTime = "elapsed time:\t\t" + elapsedTime + "\t" + elapsedTimeSli;
-		String strReachedDepth = "depth reached:\t\t" + reachedDepth + "\t" + reachedDepthSli;
-		String strErrorNumbers = "errors found:\t\t" + errorNumbers + "\t" + errorNumbersSli;
-		String strStateMemoryUsage = "mem usage(states):\t" + stateMemoryUsage + "\t" + stateMemoryUsageSli;
-		String strTotalMemoryUsage = "mem usage(total):\t" + totalMemoryUsage + "\t" + totalMemoryUsageSli;
-		String resFileName = "compare.txt";
-//		String resFilePath = Constants.TEMP_DIR_NAME + resFileName;
-		String strTitle = "\t\t\tno slicing\twith slicing";
-		FileProcessor.writeStringToFile(resFileName, strTitle + "\n", true);
-		FileProcessor.writeStringToFile(resFileName, strElapsedTime + "\n", true);
-		FileProcessor.writeStringToFile(resFileName, strReachedDepth + "\n", true);
-		FileProcessor.writeStringToFile(resFileName, strErrorNumbers + "\n", true);
-		FileProcessor.writeStringToFile(resFileName, strStateMemoryUsage + "\n", true);
-		FileProcessor.writeStringToFile(resFileName, strTotalMemoryUsage + "\n", true);
+//		// Output the results to compare.txt
+//		String strElapsedTime = "elapsed time:\t\t" + elapsedTime + "\t" + elapsedTimeSli;
+//		String strReachedDepth = "depth reached:\t\t" + reachedDepth + "\t" + reachedDepthSli;
+//		String strErrorNumbers = "errors found:\t\t" + errorNumbers + "\t" + errorNumbersSli;
+//		String strStateMemoryUsage = "mem usage(states):\t" + stateMemoryUsage + "\t" + stateMemoryUsageSli;
+//		String strTotalMemoryUsage = "mem usage(total):\t" + totalMemoryUsage + "\t" + totalMemoryUsageSli;
+//		String resFileName = "compare.txt";
+////		String resFilePath = Constants.TEMP_DIR_NAME + resFileName;
+//		String strTitle = "\t\t\tno slicing\twith slicing";
+//		FileProcessor.writeStringToFile(resFileName, strTitle + "\n", true);
+//		FileProcessor.writeStringToFile(resFileName, strElapsedTime + "\n", true);
+//		FileProcessor.writeStringToFile(resFileName, strReachedDepth + "\n", true);
+//		FileProcessor.writeStringToFile(resFileName, strErrorNumbers + "\n", true);
+//		FileProcessor.writeStringToFile(resFileName, strStateMemoryUsage + "\n", true);
+//		FileProcessor.writeStringToFile(resFileName, strTotalMemoryUsage + "\n", true);
 		resultsData = FXCollections.observableArrayList(
 					new Results("Elapsed time", elapsedTime, elapsedTimeSli),
 					new Results("Depth reached", reachedDepth, reachedDepthSli),
