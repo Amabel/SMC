@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import com.waseda.weibin.smc.model.Results;
+import com.waseda.weibin.smc.service.FileService;
 import com.waseda.weibin.smc.util.Constants;
 import com.waseda.weibin.smc.util.FileProcessor;
 import com.waseda.weibin.smc.util.FxDialogs;
@@ -46,7 +47,7 @@ public class MainFrameController {
     @FXML private SplitPane leftSplitPane;
     @FXML private ListView<String> fileListView;
     @FXML private SplitPane rightSplitPane;
-    @FXML private TextArea fileContent;
+    @FXML private TextArea textAreaFileContent;
     @FXML private TextArea messageArea;
     @FXML private Button buttonOpen;
     @FXML private Button buttonSave;
@@ -62,9 +63,10 @@ public class MainFrameController {
     
     private ObservableList<String> fileNameList = FXCollections.observableArrayList();
     private ViewController viewController = new ViewController("gui");
+//    private FileService fileService = new FileService(); 
 
     @FXML void onContentContextMenuItemSelectAll(ActionEvent event) {
-    	fileContent.selectAll();
+    	textAreaFileContent.selectAll();
     }
     
     @FXML void onMenuItemClose(ActionEvent event) {
@@ -134,13 +136,13 @@ public class MainFrameController {
     private void showFileContents(String fileName) {
     	String tempFileName = Constants.TEMP_DIR_NAME + fileName;
     	if (tempFileName != null) {
-    		fileContent.setText(FileProcessor.readFile(tempFileName));  
+    		textAreaFileContent.setText(FileProcessor.readFile(tempFileName));  
     	}
     }
     
     // Called when menuItemSave or buttonSava is clicked
     private void saveFile() {
-    	String content = fileContent.getText();
+    	String content = textAreaFileContent.getText();
     	String fileName = fileListView.getSelectionModel().getSelectedItem();
     	System.out.println("Save to file: " + fileName);
     	if (fileName != null) {
@@ -233,10 +235,17 @@ public class MainFrameController {
     	    public void handle(ActionEvent event) {
     	        Parent root;
     	        try {
-    	            root = FXMLLoader.load(getClass().getResource("/com/waseda/weibin/smc/view/AddLTLFrame.fxml"));
+    	        	
+    	        	AddLTLFrameController addLTLFrameController = new AddLTLFrameController(1);
+//    	        	addLTLFrameController.aaa();
+    	        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/waseda/weibin/smc/view/AddLTLFrame.fxml"));
+    	        	loader.setController(addLTLFrameController);
+    	        	root = loader.load();
+//    	            root = FXMLLoader.load(getClass().getResource("/com/waseda/weibin/smc/view/AddLTLFrame.fxml"));
     	            Stage stage = new Stage();
     	            stage.initStyle(StageStyle.DECORATED);
-    	            stage.setScene(new Scene(root, 400, 250));
+//    	            stage.setScene(new Scene(root, 400, 250));
+    	            stage.setScene(new Scene(root));
     	            stage.setMinHeight(250);
     	            stage.setMinWidth(400);
     	            stage.setTitle("add LTLs");  

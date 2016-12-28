@@ -15,6 +15,8 @@ public class Modex extends ModelChecker {
 	private List<String> fileNames;
 	private List<String> variableNames;
 	private List<String> ltls;
+	private String ltl;
+	private int index;
 	
 	public Modex(List<String> fileNames, List<String> variableNames, List<String> ltls) {
 		// TODO Auto-generated constructor stub
@@ -23,11 +25,23 @@ public class Modex extends ModelChecker {
 		this.ltls =ltls;
 	}
 	
+	public Modex(List<String> fileNames, List<String> variableNames, String ltl, int index) {
+		// TODO Auto-generated constructor stub
+		this.fileNames = fileNames;
+		this.variableNames = variableNames;
+		this.ltl =ltl;
+		this.index = index;
+	}
+	
 	public void extractModel() {
 		// TODO Auto-generated method stub
 		generatePrxFile();
 		extractTheModel();
-		attachLTLsToModel();
+		if (ltls == null) {
+			attachLTLToModel();
+		} else {
+			attachLTLsToModel();			
+		}
 		changeModelFileName();
 	}
 
@@ -44,6 +58,13 @@ public class Modex extends ModelChecker {
 		String contents = "%X -xe";
 		String fileName = FileProcessor.getFileNameWithoutSurfix(fileNames.get(0), ".c") + ".prx";
 		FileProcessor.createFile(fileName, contents);
+	}
+	
+	private void attachLTLToModel() {
+		String contents = "ltl {\n"
+						+ ltl
+						+ "\n";
+		FileProcessor.appendContentsToFile("model", contents);
 	}
 	
 	private void attachLTLsToModel() {

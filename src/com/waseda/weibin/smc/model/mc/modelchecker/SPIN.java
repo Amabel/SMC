@@ -15,15 +15,29 @@ public class SPIN extends ModelChecker {
 	private String outputDestinationFileName;
 	private List<String> fileNames;
 	private int mStep = 300000;
+	private int index;
 	
 	public SPIN(List<String> fileNames, String outputDestinationFilename) {
 		this.fileNames = fileNames;
 		this.outputDestinationFileName = outputDestinationFilename;
 	}
 	
-	public SPIN(List<String> fileNames, String outputDestinationFilename, int mStep) {
+//	public SPIN(List<String> fileNames, String outputDestinationFilename, int mStep) {
+//		this.fileNames = fileNames;
+//		this.outputDestinationFileName = outputDestinationFilename;
+//		this.mStep = mStep;
+//	}
+//	
+	public SPIN(List<String> fileNames, String outputDestinationFilename, int index) {
 		this.fileNames = fileNames;
 		this.outputDestinationFileName = outputDestinationFilename;
+		this.index = index;
+	}
+	
+	public SPIN(List<String> fileNames, String outputDestinationFilename, int index, int mStep) {
+		this.fileNames = fileNames;
+		this.outputDestinationFileName = outputDestinationFilename;
+		this.index = index;
 		this.mStep = mStep;
 	}
 	

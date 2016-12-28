@@ -57,4 +57,13 @@ public class AddLTLFrameController {
 		stage.close();
 	}
 	
+	public AddLTLFrameController(int a) {
+		System.out.println("1231231231");
+	}
+
+	public void aaa() {
+		// TODO Auto-generated method stub
+		System.out.println("aaaaaaaa");
+	}
+	
 }
