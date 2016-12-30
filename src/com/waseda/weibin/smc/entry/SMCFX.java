@@ -6,6 +6,7 @@ import java.io.File;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.waseda.weibin.smc.util.Command;
 import com.waseda.weibin.smc.util.Constants;
 import com.waseda.weibin.smc.util.FileProcessor;
 
@@ -43,5 +44,8 @@ public class SMCFX extends Application {
     	// Delete related files (temp directory)
     	File tempFile = new File(Constants.TEMP_DIR_NAME);
     	FileProcessor.deleteDirectory(tempFile);
+    	for (String fileName : Constants.cacheFiles) {
+			FileProcessor.deleteFile(fileName);
+		}
     }
 }

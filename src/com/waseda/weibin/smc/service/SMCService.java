@@ -10,6 +10,7 @@ import com.waseda.weibin.smc.model.Results;
 import com.waseda.weibin.smc.model.mc.modelchecker.Modex;
 import com.waseda.weibin.smc.model.mc.modelchecker.SPIN;
 import com.waseda.weibin.smc.model.slicing.slicer.FramaC;
+import com.waseda.weibin.smc.util.Command;
 import com.waseda.weibin.smc.util.Constants;
 import com.waseda.weibin.smc.util.FileProcessor;
 import com.waseda.weibin.smc.util.Output;
@@ -26,15 +27,16 @@ public class SMCService {
 //	private FramaC slicer;
 //	private Modex modex;
 	private SPIN spin;
-//	private String fileNamesInput;
-//	private String ltlsInput;
 	private List<String> fileNames;
 	private String ltl;
 	private List<String> variableNames;
 	private List<String> fileNamesWithPath;
-	private List<String> slicedFileNamesWithPath;
+	private List<String> fileNamesWithPathAndIndex;
+	private List<String> slicedFileNamesWithPathAndIndex;
 	private int index;
 	private ObservableList<Results> resultData;
+	private String resultNoSliFileName;
+	private String resultWithSliFileName;
 	
 	
 	public SMCService(List<String> fileNames, String ltl, int index) {
@@ -46,6 +48,7 @@ public class SMCService {
 	public void launch() {
 		processFileNames();
 		processLTL();
+		copyFiles();
 		processSlice();
 		processModelExtract();
 		processModelcheck();
@@ -61,43 +64,49 @@ public class SMCService {
 	
 	public void processModelExtract() {
 		// Extract origin model
-		Modex modexOrigin = new Modex(fileNamesWithPath, variableNames, ltl, index);
+		Modex modexOrigin = new Modex(fileNamesWithPathAndIndex, variableNames, ltl, index);
 		modexOrigin.extractModel();
 		
 		// Extract sliced model
-		Modex modexSliced = new Modex(slicedFileNamesWithPath, variableNames, ltl, index);
+		Modex modexSliced = new Modex(slicedFileNamesWithPathAndIndex, variableNames, ltl, index);
 		modexSliced.extractModel();
 	}
 	
 	public void processModelcheck() {
 		System.out.println("\n===== Begin to spin =====");
-		String outputDestinationFileName = "_" + index + "_res_nosli.txt";
-		spin = new SPIN(fileNamesWithPath, outputDestinationFileName);
+		resultNoSliFileName = Constants.TEMP_DIR_NAME + "res_nosli_" + "ltl" + index + ".txt";
+		spin = new SPIN(fileNamesWithPathAndIndex, resultNoSliFileName);
 		spin.modelCheck();
-		System.out.println("output file: " + outputDestinationFileName);
+		System.out.println("output file: " + resultNoSliFileName);
 		// Model check the sliced model
-		String outputDestinationFileName2 = "_" + index + "_res_sli.txt";
-		spin = new SPIN(slicedFileNamesWithPath, outputDestinationFileName2);
+		resultWithSliFileName = Constants.TEMP_DIR_NAME + "res_sli_" + "ltl" + index + ".txt";
+		spin = new SPIN(slicedFileNamesWithPathAndIndex, resultWithSliFileName);
 		spin.modelCheck();
 		
-		System.out.println("output file: " + outputDestinationFileName2);
+		System.out.println("output file: " + resultWithSliFileName);
 		System.out.println("===== End of spin =====");
 	}
 	
 	private void processSlicedFileNames() {
-		slicedFileNamesWithPath = new ArrayList<>();
+		slicedFileNamesWithPathAndIndex = new ArrayList<>();
 		for (String fileName : fileNamesWithPath) {
-			String name = FileProcessor.getFileNameWithoutSurfix(fileName, ".c") + "_ltl" + index + "_sliced.c";
-			slicedFileNamesWithPath.add(name);
+			String name = FileProcessor.getFileNameWithoutSurfix(fileName, ".c") + "_sliced_ltl" + index + ".c";
+			slicedFileNamesWithPathAndIndex.add(name);
 		}
 	}
 	
 	private void processFileNames() {
+		// Add dir to fileNames
 		fileNamesWithPath = new ArrayList<String>();
-
 		for (String fileName : fileNames) {
 			String fileNameWithPath = Constants.TEMP_DIR_NAME + fileName;
 			fileNamesWithPath.add(fileNameWithPath);
+		}
+		// Add index to fileNameWithPath
+		fileNamesWithPathAndIndex = new ArrayList<String>();
+		for (String fileNameswithPath : fileNamesWithPath) {
+			String fileNameWithPathAndIndex = FileProcessor.getFileNameWithoutSurfix(fileNameswithPath, ".c") + "_ltl" + index + ".c";
+			fileNamesWithPathAndIndex.add(fileNameWithPathAndIndex);
 		}
 	}
 	private void processLTL() {
@@ -123,8 +132,8 @@ public class SMCService {
 		String elapsedTime = "";
 		String elapsedTimeSli = "";
 		try {
-			elapsedTime = Output.findOutputNumber("res_nosli.txt", contents);
-			elapsedTimeSli = Output.findOutputNumber("res_sli.txt", contents);
+			elapsedTime = Output.findOutputNumber(resultNoSliFileName, contents);
+			elapsedTimeSli = Output.findOutputNumber(resultWithSliFileName, contents);
 		} catch (IOException e) {
 			System.out.println("Failed to get elapsed time");
 		}
@@ -134,8 +143,8 @@ public class SMCService {
 		String reachedDepth = "";
 		String reachedDepthSli = "";
 		try {
-			reachedDepth = Output.findOutputNumber("res_nosli.txt", contents);
-			reachedDepthSli = Output.findOutputNumber("res_sli.txt", contents);
+			reachedDepth = Output.findOutputNumber(resultNoSliFileName, contents);
+			reachedDepthSli = Output.findOutputNumber(resultWithSliFileName, contents);
 		} catch (IOException e) {
 			System.out.println("Failed to get reached depth");
 		}
@@ -145,8 +154,8 @@ public class SMCService {
 		String errorNumbers = "";
 		String errorNumbersSli = "";
 		try {
-			errorNumbers = Output.findOutputNumber("res_nosli.txt", contents);
-			errorNumbersSli = Output.findOutputNumber("res_sli.txt", contents);
+			errorNumbers = Output.findOutputNumber(resultNoSliFileName, contents);
+			errorNumbersSli = Output.findOutputNumber(resultWithSliFileName, contents);
 		} catch (IOException e) {
 			System.out.println("Failed to get error number");
 		}
@@ -156,8 +165,8 @@ public class SMCService {
 		String stateMemoryUsage = "";
 		String stateMemoryUsageSli = "";
 		try {
-			stateMemoryUsage = Output.findOutputNumber("res_nosli.txt", contents);
-			stateMemoryUsageSli = Output.findOutputNumber("res_sli.txt", contents);
+			stateMemoryUsage = Output.findOutputNumber(resultNoSliFileName, contents);
+			stateMemoryUsageSli = Output.findOutputNumber(resultWithSliFileName, contents);
 		} catch (IOException e) {
 			System.out.println("Failed to get state memory usage");
 		}
@@ -167,10 +176,10 @@ public class SMCService {
 		String totalMemoryUsage = "";
 		String totalMemoryUsageSli = "";
 		try {
-			totalMemoryUsage = Output.findOutputNumber("res_nosli.txt", contents);
-			totalMemoryUsageSli = Output.findOutputNumber("res_sli.txt", contents);
+			totalMemoryUsage = Output.findOutputNumber(resultNoSliFileName, contents);
+			totalMemoryUsageSli = Output.findOutputNumber(resultWithSliFileName, contents);
 		} catch (IOException e) {
-			System.out.println("Failed to total memory usage");
+			System.out.println("Failed to get total memory usage");
 		}
 		
 		resultData = FXCollections.observableArrayList(
@@ -181,6 +190,14 @@ public class SMCService {
 					new Results("mem usage(total)", totalMemoryUsage, totalMemoryUsageSli)
 				);
 		
+	}
+	
+	private void copyFiles() {
+		for (String fileName : fileNamesWithPath) {
+			String command = "cp " + fileName + " " + FileProcessor.getFileNameWithoutSurfix(fileName, ".c") + "_ltl" + index + ".c";
+			String shellScriptName = "copy.sh";
+			Command.executeCommandInShell(command, shellScriptName);
+		}
 	}
 	
 	public ObservableList<Results> getResultData() {

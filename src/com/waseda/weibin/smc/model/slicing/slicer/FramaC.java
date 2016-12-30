@@ -16,6 +16,7 @@ public class FramaC extends Slicer {
 	private List<String> fileNames;
 	private List<String> variableNames;
 	private String targetDirectory = "examples";
+	private int index;
 	
 	public FramaC(List<String> fileNames, List<String> variableNames) {
 		// TODO Auto-generated constructor stub
@@ -23,11 +24,18 @@ public class FramaC extends Slicer {
 		this.variableNames = variableNames;
 	}
 	
+	public FramaC(List<String> fileNames, List<String> variableNames, int index) {
+		// TODO Auto-generated constructor stub
+		this.fileNames = fileNames;
+		this.variableNames = variableNames;
+		this.index = index;
+	}
+	
 	@Override
 	public void slice() {
 		// TODO Auto-generated method stub
-		String dir = Constants.TEMP_DIR_NAME;
-		Command.switchDir(dir);
+//		String dir = Constants.TEMP_DIR_NAME;
+//		Command.switchDir(dir);
 		String command = createCommand();
 		doSlice(command);
 	}
@@ -65,7 +73,7 @@ public class FramaC extends Slicer {
 		String cmd = "";
 		String str = processFileNames() + " -slice-value " + processValueNames();
 		// Generate the target filename
-		String targetFileName = FileProcessor.getFileNameWithoutSurfix(fileNames.get(0), ".c") + "_sliced.c";
+		String targetFileName = FileProcessor.getFileNameWithoutSurfix(fileNames.get(0), ".c") + "_sliced_ltl" + index + ".c";
 		// Generate the slicing command
 		// Eg. of command: $ frama-c <source files> <desired slicing mode and appropriate options> -then-on 'Slicing export' -print
 		// Create a new file
