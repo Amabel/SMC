@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.waseda.weibin.smc.model.CheckProperties;
 import com.waseda.weibin.smc.model.Results;
-import com.waseda.weibin.smc.service.FileService;
 import com.waseda.weibin.smc.service.SMCMainService;
 import com.waseda.weibin.smc.util.Constants;
 import com.waseda.weibin.smc.util.FileProcessor;
