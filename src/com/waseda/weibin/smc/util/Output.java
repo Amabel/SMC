@@ -40,7 +40,7 @@ public class Output {
             }
             
         } catch (IOException e) {
-        	e.printStackTrace();
+        	System.out.println("Erroe when processing outputs");
         } finally {
             if (br != null) {
                 br.close();

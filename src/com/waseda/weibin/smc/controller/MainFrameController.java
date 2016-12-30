@@ -3,10 +3,13 @@ package com.waseda.weibin.smc.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
+import com.waseda.weibin.smc.model.CheckProperties;
 import com.waseda.weibin.smc.model.Results;
 import com.waseda.weibin.smc.service.FileService;
+import com.waseda.weibin.smc.service.SMCMainService;
 import com.waseda.weibin.smc.util.Constants;
 import com.waseda.weibin.smc.util.FileProcessor;
 import com.waseda.weibin.smc.util.FxDialogs;
@@ -63,6 +66,8 @@ public class MainFrameController {
     
     private ObservableList<String> fileNameList = FXCollections.observableArrayList();
     private ViewController viewController = new ViewController("gui");
+    private List<String> ltls = new ArrayList<String>();
+    private SMCMainService smcMainService;
 //    private FileService fileService = new FileService(); 
 
     @FXML void onContentContextMenuItemSelectAll(ActionEvent event) {
@@ -137,6 +142,7 @@ public class MainFrameController {
     	String tempFileName = Constants.TEMP_DIR_NAME + fileName;
     	if (tempFileName != null) {
     		textAreaFileContent.setText(FileProcessor.readFile(tempFileName));  
+    		
     	}
     }
     
@@ -157,23 +163,18 @@ public class MainFrameController {
     private void verify() {
     	System.out.println("Verify clicked");
     	String ltlInput = textFieldLTLFormula.getText();
+    	ltls.add(ltlInput);
     	String fileName = fileListView.getSelectionModel().getSelectedItem();
     	// When nothing selected
     	if (fileName == null) {
     		fileName = fileNameList.get(0);
     	}
     	System.out.println("Verify file: " + fileName);
-    	viewController.setLtlsInput(ltlInput);
-    	viewController.setFileNamesInput(fileName);
-    	viewController.setStatusProcessInputs();
-//    	viewController.launch();
     	
+    	CheckProperties checkProperties = new CheckProperties(fileNameList, ltls);
+    	smcMainService = new SMCMainService(checkProperties);
+    	smcMainService.start();
     	
-    	viewController.processInputs();
-    	viewController.processSlice();
-    	viewController.processModelExtract();
-    	viewController.processModelcheck();
-    	viewController.processOutputs();
     	setResultsToTableView();
     }
     
@@ -195,7 +196,7 @@ public class MainFrameController {
     }
     
     private void setResultsToTableView() {
-    	ObservableList<Results> resultsData = viewController.getResultsData();
+    	ObservableList<Results> resultsData = smcMainService.getResultDatas().get(0);
     	if (resultsData != null) {
     		tableViewCompare.setItems(resultsData);    		
     	}

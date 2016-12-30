@@ -6,7 +6,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.waseda.weibin.smc.controller.AddLTLFrameController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="250.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <TextField fx:id="textFieldLTL_0" layoutX="73.0" layoutY="55.0" prefHeight="27.0" prefWidth="250.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="55.0" />
       <TextField fx:id="textFieldLTL_1" layoutX="73.0" layoutY="98.0" prefHeight="27.0" prefWidth="250.0" AnchorPane.leftAnchor="73.0" AnchorPane.topAnchor="95.0" />

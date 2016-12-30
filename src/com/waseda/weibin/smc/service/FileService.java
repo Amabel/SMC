@@ -86,7 +86,7 @@ public class FileService {
     	viewController.processSlice();
     	viewController.processModelExtract();
     	viewController.processModelcheck();
-    	viewController.processOutputs();
+    	viewController.generateResultData();
     	setResultsToTableView();
     }
     
