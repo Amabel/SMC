@@ -1,6 +1,7 @@
 package com.waseda.weibin.smc.controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javafx.event.ActionEvent;
@@ -20,21 +21,25 @@ public class AddLTLFrameController {
 	@FXML private TextField textFieldLTL_2;
 	@FXML private Button buttonCancel;
 	
-	private List<String> ltls = new ArrayList<>();
+	private List<String> ltls;
 	
 	@FXML void onButtonCleartextFieldLTL_0(ActionEvent event) {
 		textFieldLTL_0.clear();
+		ltls.remove(0);
 	}
 	
 	@FXML void onButtonCleartextFieldLTL_1(ActionEvent event) {
 		textFieldLTL_1.clear();
+		ltls.remove(1);
 	}
 	
 	@FXML void onButtonCleartextFieldLTL_2(ActionEvent event) {
 		textFieldLTL_2.clear();
+		ltls.remove(2);
 	}
 	
 	@FXML void onButtonAdd(ActionEvent event) {
+		ltls.clear();
 		String ltl = null;
 		ltl = textFieldLTL_0.getText();
 		if (ltl != null) {
@@ -57,13 +62,20 @@ public class AddLTLFrameController {
 		stage.close();
 	}
 	
-	public AddLTLFrameController(int a) {
-		System.out.println("1231231231");
+	public AddLTLFrameController(List<String> ltls) {
+		this.ltls = ltls;
 	}
-
-	public void aaa() {
-		// TODO Auto-generated method stub
-		System.out.println("aaaaaaaa");
-	}
+	
+    @FXML void initialize() {
+    	System.out.println(ltls);
+    	List<TextField> tfs = new ArrayList<>(Arrays.asList(
+												    			textFieldLTL_0,
+												    			textFieldLTL_1,
+												    			textFieldLTL_2
+												    		));
+    	for (int i=0; i<ltls.size(); i++) {
+    		tfs.get(i).setText(ltls.get(i));
+    	}
+    }
 	
 }

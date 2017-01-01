@@ -64,7 +64,6 @@ public class MainFrameController {
     @FXML private Button buttonAddLTL;
     
     private ObservableList<String> fileNameList = FXCollections.observableArrayList();
-    private ViewController viewController = new ViewController("gui");
     private List<String> ltls = new ArrayList<String>();
     private SMCMainService smcMainService;
 //    private FileService fileService = new FileService(); 
@@ -160,6 +159,7 @@ public class MainFrameController {
     }
     
     private void verify() {
+    	ltls.clear();
     	System.out.println("Verify clicked");
     	String ltlInput = textFieldLTLFormula.getText();
     	ltls.add(ltlInput);
@@ -175,6 +175,8 @@ public class MainFrameController {
     	smcMainService.start();
     	
     	setResultsToTableView();
+    	tableViewCompare.setVisible(true);
+
     }
     
     // Remove the file on the listview, also remove the file in the temp directory
@@ -214,6 +216,8 @@ public class MainFrameController {
     
     @FXML void initialize() {
     	// Initialize processes
+    	// Hide the tableView
+    	tableViewCompare.setVisible(false);
     	
     	// Create a temporal directory
     	String tempDirName = Constants.TEMP_DIR_NAME;
@@ -235,9 +239,13 @@ public class MainFrameController {
     	    public void handle(ActionEvent event) {
     	        Parent root;
     	        try {
+    	        	// Set the ltl in the textField as ltl_0
+    	        	if (ltls.isEmpty()) {
+    	        		String ltlInput = textFieldLTLFormula.getText();
+    	            	ltls.add(ltlInput);
+    	        	}
     	        	
-    	        	AddLTLFrameController addLTLFrameController = new AddLTLFrameController(1);
-//    	        	addLTLFrameController.aaa();
+    	        	AddLTLFrameController addLTLFrameController = new AddLTLFrameController(ltls);
     	        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/waseda/weibin/smc/view/AddLTLFrame.fxml"));
     	        	loader.setController(addLTLFrameController);
     	        	root = loader.load();

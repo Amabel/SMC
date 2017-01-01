@@ -16,20 +16,24 @@ public class SMCMainService {
 
 	private CheckProperties checkProperties;
 	private SMCService smcService;
-	private int index = 0;
+	private int numLTLs = 0;
 	private List<ObservableList<Results>> resultDatas = new ArrayList<ObservableList<Results>>();
 
 	
 	public SMCMainService(CheckProperties checkProperties) {
 		this.checkProperties = checkProperties;
+		numLTLs = checkProperties.getLtls().size();
 	}
 	
 	public void start() {
 		List<String> fileNames = checkProperties.getFileNames();
-		String ltl = checkProperties.getLtls().get(index);
-		smcService = new SMCService(fileNames, ltl, index);
-		smcService.launch();
-		resultDatas.add(smcService.getResultData());
+		for (int i=0; i<numLTLs; i++) {
+			String ltl = checkProperties.getLtls().get(i);
+			smcService = new SMCService(fileNames, ltl, i);
+			smcService.launch();
+			resultDatas.add(smcService.getResultData());
+		}
+
 	}
 
 	public List<ObservableList<Results>> getResultDatas() {
