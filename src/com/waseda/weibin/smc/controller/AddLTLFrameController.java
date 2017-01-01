@@ -53,6 +53,9 @@ public class AddLTLFrameController {
 		if (ltl != null) {
 			ltls.add(ltl);
 		}
+    	ltls.removeAll(Arrays.asList(""));
+		Stage stage = (Stage) buttonCancel.getScene().getWindow();
+		stage.close();
 		
 		System.out.println("ltls: " + ltls.toString());
 	}

@@ -3,7 +3,9 @@ package com.waseda.weibin.smc.controller;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import com.waseda.weibin.smc.model.CheckProperties;
@@ -62,6 +64,7 @@ public class MainFrameController {
     @FXML private TableColumn<Results, String> tableViewCompareWithSlicingColumn;
     @FXML private CheckBox checkBoxCompare;
     @FXML private Button buttonAddLTL;
+    @FXML private TextArea textAreaMsg;
     
     private ObservableList<String> fileNameList = FXCollections.observableArrayList();
     private List<String> ltls = new ArrayList<String>();
@@ -196,6 +199,10 @@ public class MainFrameController {
     	fileNameList.clear();
     }
     
+    private void showMsg() {
+//    	String msg = "ltl_0: " +  
+    }
+    
     private void setResultsToTableView() {
     	ObservableList<Results> resultsData = smcMainService.getResultDatas().get(0);
     	if (resultsData != null) {
@@ -244,6 +251,7 @@ public class MainFrameController {
     	        		String ltlInput = textFieldLTLFormula.getText();
     	            	ltls.add(ltlInput);
     	        	}
+    	        	ltls.removeAll(Arrays.asList(""));
     	        	
     	        	AddLTLFrameController addLTLFrameController = new AddLTLFrameController(ltls);
     	        	FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/waseda/weibin/smc/view/AddLTLFrame.fxml"));
