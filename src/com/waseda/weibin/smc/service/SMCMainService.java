@@ -1,10 +1,13 @@
 package com.waseda.weibin.smc.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.waseda.weibin.smc.model.CheckProperties;
 import com.waseda.weibin.smc.model.Results;
+import com.waseda.weibin.smc.util.Constants;
 
 import javafx.collections.ObservableList;
 
@@ -37,9 +40,20 @@ public class SMCMainService {
 	}
 
 	public List<ObservableList<Results>> getResultDatas() {
+		System.out.println("resultDatas:" + resultDatas);
 		return resultDatas;
 	}
 	
+	private void outputToLog() {
+		// Get current time
+		Date date = new Date();
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		String time = dateFormat.format(date);
+		
+		// Output file name
+		String outputFileName = time + ".log";
+		String outputFileNameWithDir = Constants.LOG_DIR_NAME + outputFileName;
+	}
 	
 
 }

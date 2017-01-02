@@ -11,6 +11,7 @@ import java.util.List;
  */
 public interface Constants {
 	public static final String TEMP_DIR_NAME = "temp/";
+	public static final String LOG_DIR_NAME = "log/";
 	public static final List<String> cacheFiles = new ArrayList<>(Arrays.asList(
 			"slice.sh",
 			"modex.sh",

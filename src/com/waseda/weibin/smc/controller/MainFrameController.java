@@ -173,6 +173,11 @@ public class MainFrameController {
     	}
     	System.out.println("Verify file: " + fileName);
     	
+    	// Remove the space character in ltls
+    	for (String ltl : ltls) {
+			ltl.replace(" ", "");
+		}
+    	
     	CheckProperties checkProperties = new CheckProperties(fileNameList, ltls);
     	smcMainService = new SMCMainService(checkProperties);
     	smcMainService.start();

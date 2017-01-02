@@ -1,5 +1,7 @@
 package com.waseda.weibin.smc.model;
 
+import java.util.List;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
@@ -9,6 +11,7 @@ import javafx.beans.property.StringProperty;
  */
 public class Results {
 	
+//	private String ltls;
 	private SimpleStringProperty attribute;
 	private SimpleStringProperty noSli;
 	private SimpleStringProperty withSli;
@@ -18,6 +21,12 @@ public class Results {
 		this.noSli = new SimpleStringProperty(noSli);
 		this.withSli = new SimpleStringProperty(withSli);
 	}
+	
+//	public Results(String ltls, String attribute, String noSli, String withSli) {
+//		this.attribute = new SimpleStringProperty(attribute);
+//		this.noSli = new SimpleStringProperty(noSli);
+//		this.withSli = new SimpleStringProperty(withSli);
+//	}
 
 	public String getAttribute() {
 		return attribute.get();
@@ -42,4 +51,12 @@ public class Results {
 	public void setWithSli(String withSli) {
 		this.withSli.set(withSli);
 	}
+
+	@Override
+	public String toString() {
+		String str = attribute +  "\t" + noSli + "\t" + withSli + "\n";
+		return str;
+	}
+	
+	
 }
