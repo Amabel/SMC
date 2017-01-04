@@ -234,6 +234,8 @@ public class MainFrameController {
     	// Create a temporal directory
     	String tempDirName = Constants.TEMP_DIR_NAME;
     	FileProcessor.createDirectioy(tempDirName);
+    	String logDirName = Constants.LOG_DIR_NAME;
+    	FileProcessor.createDirectioy(logDirName);
     	
     	// Listeners
     	fileListView.setOnMouseClicked(new EventHandler<MouseEvent>() {

@@ -8,6 +8,7 @@ import java.util.List;
 import com.waseda.weibin.smc.model.CheckProperties;
 import com.waseda.weibin.smc.model.Results;
 import com.waseda.weibin.smc.util.Constants;
+import com.waseda.weibin.smc.util.FileProcessor;
 
 import javafx.collections.ObservableList;
 
@@ -35,6 +36,7 @@ public class SMCMainService {
 			smcService = new SMCService(fileNames, ltl, i);
 			smcService.launch();
 			resultDatas.add(smcService.getResultData());
+			outputToLog();
 		}
 
 	}
@@ -53,6 +55,26 @@ public class SMCMainService {
 		// Output file name
 		String outputFileName = time + ".log";
 		String outputFileNameWithDir = Constants.LOG_DIR_NAME + outputFileName;
+		
+		// Create file
+		FileProcessor.createFile(outputFileNameWithDir);
+		
+		for (int i=0; i<numLTLs; i++) {
+			// Each ltl
+			String contents = "ltl_" + i + ": " + checkProperties.getLtls().get(i);
+			FileProcessor.appendContentsToFile(outputFileNameWithDir, contents);
+			
+			// Each line
+			ObservableList<Results> resultData = resultDatas.get(i);
+			for (Results results : resultData) {
+				// attribute	nosli	withsli
+				String attribute = results.getAttribute();
+				String noSli = results.getNoSli();
+				String withSli = results.getWithSli();
+				contents = attribute + "\t" + noSli + "\t" + withSli;
+				FileProcessor.appendContentsToFile(outputFileNameWithDir, contents);
+			}
+		}
 	}
 	
 

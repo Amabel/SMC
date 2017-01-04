@@ -186,8 +186,8 @@ public class SMCService {
 					new Results("Elapsed time", elapsedTime, elapsedTimeSli),
 					new Results("Depth reached", reachedDepth, reachedDepthSli),
 					new Results("Errors found", errorNumbers, errorNumbersSli),
-					new Results("mem usage(states)", stateMemoryUsage, stateMemoryUsageSli),
-					new Results("mem usage(total)", totalMemoryUsage, totalMemoryUsageSli)
+					new Results("Mem usage(states)", stateMemoryUsage, stateMemoryUsageSli),
+					new Results("Mem usage(total)", totalMemoryUsage, totalMemoryUsageSli)
 				);
 		
 	}
