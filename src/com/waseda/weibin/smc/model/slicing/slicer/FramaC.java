@@ -81,9 +81,6 @@ public class FramaC extends Slicer {
 		// Does not create a new file
 //		cmd = "frama-c " + str + "-then-on 'Slicing export' -print";
 		
-//		Log4j2.logger.trace("===== Print the slicing command =====");
-//		Log4j2.logger.trace(cmd);
-		
 		System.out.println(cmd);
 		
 		return cmd;

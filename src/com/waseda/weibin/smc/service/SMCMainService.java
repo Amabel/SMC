@@ -27,6 +27,11 @@ public class SMCMainService {
 	public SMCMainService(CheckProperties checkProperties) {
 		this.checkProperties = checkProperties;
 		numLTLs = checkProperties.getLtls().size();
+		if (numLTLs > 1) {
+			numLTLs = numLTLs - 1;
+		}
+		
+		System.out.println("ltls.size = " + numLTLs);
 	}
 	
 	public void start() {
@@ -36,13 +41,13 @@ public class SMCMainService {
 			smcService = new SMCService(fileNames, ltl, i);
 			smcService.launch();
 			resultDatas.add(smcService.getResultData());
-			outputToLog();
+			
 		}
-
+		outputToLog();
 	}
 
 	public List<ObservableList<Results>> getResultDatas() {
-		System.out.println("resultDatas:" + resultDatas);
+//		System.out.println("resultDatas:" + resultDatas);
 		return resultDatas;
 	}
 	
@@ -74,6 +79,8 @@ public class SMCMainService {
 				contents = attribute + "\t" + noSli + "\t" + withSli;
 				FileProcessor.appendContentsToFile(outputFileNameWithDir, contents);
 			}
+			FileProcessor.appendContentsToFile(outputFileNameWithDir, "\n");
+
 		}
 	}
 	

@@ -162,8 +162,9 @@ public class MainFrameController {
     }
     
     private void verify() {
-    	ltls.clear();
+
     	System.out.println("Verify clicked");
+    	
     	String ltlInput = textFieldLTLFormula.getText();
     	ltls.add(ltlInput);
     	String fileName = fileListView.getSelectionModel().getSelectedItem();

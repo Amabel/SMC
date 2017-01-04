@@ -42,15 +42,15 @@ public class AddLTLFrameController {
 		ltls.clear();
 		String ltl = null;
 		ltl = textFieldLTL_0.getText();
-		if (ltl != null) {
+		if (ltl != null && ltl != "") {
 			ltls.add(ltl);
 		}
 		ltl = textFieldLTL_1.getText();
-		if (ltl != null) {
+		if (ltl != null && ltl != "") {
 			ltls.add(ltl);
 		}
 		ltl = textFieldLTL_2.getText();
-		if (ltl != null) {
+		if (ltl != null && ltl != "") {
 			ltls.add(ltl);
 		}
     	ltls.removeAll(Arrays.asList(""));

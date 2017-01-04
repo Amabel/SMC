@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.logging.log4j.core.config.plugins.util.ResolverUtil.Test;
+
 import com.waseda.weibin.smc.model.Results;
 import com.waseda.weibin.smc.model.mc.modelchecker.Modex;
 import com.waseda.weibin.smc.model.mc.modelchecker.SPIN;
@@ -48,6 +50,9 @@ public class SMCService {
 	public void launch() {
 		processFileNames();
 		processLTL();
+		
+		test();
+		
 		copyFiles();
 		processSlice();
 		processModelExtract();
@@ -57,7 +62,7 @@ public class SMCService {
 	
 	public void processSlice() {
 		// Do slicing
-		FramaC slicer = new FramaC(fileNamesWithPath, variableNames);
+		FramaC slicer = new FramaC(fileNamesWithPath, variableNames, index);
 		slicer.slice();
 		processSlicedFileNames();
 	}
@@ -202,6 +207,10 @@ public class SMCService {
 	
 	public ObservableList<Results> getResultData() {
 		return resultData;
+	}
+	
+	private void test() {
+		System.out.println("ltl_" + index + ": " + ltl +"\n" + "var: " + variableNames);
 	}
 
 }
